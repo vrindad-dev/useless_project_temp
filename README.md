@@ -63,7 +63,7 @@ For Software:
 # Video
 ## 🎥 Demo
 
-[▶️ Watch Ninak Vayye Demo](./Recording%202026-09-04%20033251.mp4)
+[▶️ Watch Ninak Vayye Demo](./Recording2026-09-04%20033251.mp4)
 
 
 ## Team Contributions
