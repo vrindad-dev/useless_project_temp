@@ -61,7 +61,9 @@ For Software:
 
 ### Project Demo
 # Video
-(Recording 2026-09-04 033151.mp4)
+## 🎥 Demo
+
+[▶️ Watch Ninak Vayye Demo](./Recording%202026-09-04%20033251.mp4)
 
 
 ## Team Contributions
