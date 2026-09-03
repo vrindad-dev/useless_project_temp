@@ -2,47 +2,45 @@
 
 
 
-# [Project Name] 🎯
+# NINAK VAYYE 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: Pazham.exe
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Vrindalekshmi D - LBSITW Poojapura, Trivandrum
 
 ### Project Description
-[2-3 lines about what your project does]
+**Ninak Vayye** is a playful AI-powered fruit companion that analyzes a fruit and gives it a fun “emotional personality.” Users can chat with Pazhu, get compatibility insights, ask weird fruit-related questions, and discover creative recipes.
+
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+Ever wondered if your banana is silently judging you for leaving it to rot?🍌💀
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+Ninak Vayye tackles the biggest problem humanity never asked to solve: understanding what your fruit is feeling before it becomes emotionally unavailable.
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
-
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+- HTML,  CSS, JavaScript
+- Vanilla JavaScript
+- AI API for conversational responses and fruit analysis
+  Browser Camera/File API for capturing fruit images
+- VS Code
+  Git & GitHub
+  Vercel
 
 ### Implementation
 For Software:
 # Installation
-[commands]
+git clone https://github.com/vrindad-dev/useless_project_temp.git
+cd useless_project_temp
 
 # Run
-[commands]
+Open index.html in a browser
 
 ### Project Documentation
 For Software:
@@ -98,6 +96,10 @@ Made with ❤️ at TinkerHub Useless Projects
 
 ![Static Badge](https://img.shields.io/badge/TinkerHub-24?color=%23000000&link=https%3A%2F%2Fwww.tinkerhub.org%2F)
 ![Static Badge](https://img.shields.io/badge/UselessProjects--26-26?link=https%3A%2F%2Ftinkerhub.org%2Fevents%2F1M8ORET9A1%2Fuseless-projects-3.0)
+
+
+
+
 
 
 
