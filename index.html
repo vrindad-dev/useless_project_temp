@@ -1,2879 +1,2361 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>NINAK VAYYE? — Pazham.exe</title>
-
-<!-- Browser vision -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
-
-<style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    background: #070707;
-    color: #f5f5f5;
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -3;
-
-    background-image:
-        linear-gradient(rgba(255,230,0,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,230,0,0.025) 1px, transparent 1px);
-
-    background-size: 42px 42px;
-}
-
-body::after {
-    content: "";
-    position: fixed;
-    width: 500px;
-    height: 500px;
-    left: 50%;
-    top: 20%;
-    transform: translate(-50%, -50%);
-    background: rgba(255,230,0,0.035);
-    filter: blur(100px);
-    border-radius: 50%;
-    z-index: -2;
-    pointer-events: none;
-}
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #080808;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #ffe600;
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    height: 76px;
-    padding: 0 6%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    background: rgba(7,7,7,0.88);
-    backdrop-filter: blur(18px);
-
-    border-bottom: 1px solid #202020;
-}
-
-.logo {
-    font-size: 1.25rem;
-    font-weight: 1000;
-    letter-spacing: 2px;
-}
-
-.logo span {
-    color: #ffe600;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.nav-links {
-    display: flex;
-    gap: 8px;
-}
-
-.nav-btn {
-    padding: 9px 14px;
-
-    background: transparent;
-    color: #aaa;
-
-    border: 1px solid #292929;
-    border-radius: 8px;
-
-    cursor: pointer;
-    font-weight: 700;
-
-    transition: 0.2s;
-}
-
-.nav-btn:hover {
-    color: #ffe600;
-    border-color: #ffe600;
-}
-
-.status {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-
-    padding: 8px 12px;
-
-    color: #8cff66;
-    border: 1px solid #31522b;
-    border-radius: 30px;
-
-    font-size: 0.7rem;
-    font-weight: 800;
-}
-
-.status-dot {
-    width: 7px;
-    height: 7px;
-    background: #8cff66;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #8cff66;
-}
-
-/* =========================================================
-   GLOBAL
-========================================================= */
-
-main {
-    width: min(1120px, 90%);
-    margin: auto;
-}
-
-section {
-    scroll-margin-top: 90px;
-}
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
-    min-height: calc(100vh - 76px);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-    padding: 70px 20px;
-}
-
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
-    padding: 9px 15px;
-
-    border: 1px solid #303030;
-    border-radius: 50px;
-
-    color: #8d8d8d;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 1px;
-
-    margin-bottom: 28px;
-}
-
-.hero-badge span {
-    color: #ffe600;
-}
-
-.hero h1 {
-    font-size: clamp(4.5rem, 14vw, 10rem);
-    line-height: 0.78;
-
-    font-weight: 1000;
-    letter-spacing: -9px;
-}
-
-.hero h1 .yellow {
-    color: #ffe600;
-}
-
-.hero-subtitle {
-    max-width: 610px;
-
-    margin-top: 35px;
-
-    color: #898989;
-    font-size: 1.05rem;
-    line-height: 1.7;
-}
-
-.hero-subtitle strong {
-    color: #ddd;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 12px;
-    margin-top: 35px;
-}
-
-.primary-btn {
-    padding: 16px 25px;
-
-    border: none;
-    border-radius: 10px;
-
-    background: #ffe600;
-    color: #050505;
-
-    font-weight: 1000;
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.primary-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(255,230,0,0.15);
-}
-
-.secondary-btn {
-    padding: 16px 25px;
-
-    border: 1px solid #333;
-    border-radius: 10px;
-
-    background: transparent;
-    color: #ddd;
-
-    font-weight: 800;
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.secondary-btn:hover {
-    border-color: #ffe600;
-    color: #ffe600;
-}
-
-.hero-note {
-    margin-top: 45px;
-    color: #444;
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-}
-
-/* =========================================================
-   SECTION HEADERS
-========================================================= */
-
-.section-label {
-    color: #ffe600;
-    font-size: 0.7rem;
-    font-weight: 1000;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-
-.section-title {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 1000;
-    letter-spacing: -2px;
-}
-
-.section-description {
-    margin-top: 10px;
-    margin-bottom: 35px;
-    color: #666;
-    line-height: 1.6;
-}
-
-/* =========================================================
-   SCANNER
-========================================================= */
-
-#scanner {
-    padding: 100px 0;
-}
-
-.scanner-shell {
-    position: relative;
-
-    background: #0d0d0d;
-    border: 1px solid #292929;
-    border-radius: 24px;
-
-    padding: 30px;
-
-    overflow: hidden;
-}
-
-.scanner-shell::before {
-    content: "PAZHU VISION SYSTEM";
-    position: absolute;
-    top: 16px;
-    right: 20px;
-
-    color: #333;
-    font-size: 0.6rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-}
-
-.upload-area {
-    min-height: 330px;
-
-    border: 2px dashed #343434;
-    border-radius: 18px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    cursor: pointer;
-
-    transition: 0.25s;
-}
-
-.upload-area:hover,
-.upload-area.dragging {
-    border-color: #ffe600;
-    background: #121200;
-}
-
-.upload-icon {
-    width: 80px;
-    height: 80px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 20px;
-
-    background: #151515;
-    border: 1px solid #333;
-
-    font-size: 2.4rem;
-
-    margin-bottom: 20px;
-}
-
-.upload-area h3 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-}
-
-.upload-area p {
-    color: #666;
-    font-size: 0.85rem;
-}
-
-.upload-hint {
-    margin-top: 12px;
-    color: #444;
-    font-size: 0.7rem;
-}
-
-#fruitInput {
-    display: none;
-}
-
-/* =========================================================
-   PREVIEW
-========================================================= */
-
-.preview-wrapper {
-    display: none;
-    margin-top: 25px;
-    text-align: center;
-}
-
-.preview-wrapper.active {
-    display: block;
-}
-
-#preview {
-    display: block;
-
-    width: min(420px, 100%);
-    height: 300px;
-
-    margin: auto;
-
-    object-fit: contain;
-
-    border-radius: 18px;
-    border: 1px solid #333;
-
-    background: #050505;
-}
-
-.file-name {
-    margin-top: 10px;
-    color: #666;
-    font-size: 0.75rem;
-}
-
-/* =========================================================
-   ANALYZE
-========================================================= */
-
-.analyze-btn {
-    display: none;
-
-    width: 100%;
-    max-width: 420px;
-
-    margin: 22px auto 0;
-
-    padding: 16px;
-
-    border: none;
-    border-radius: 10px;
-
-    background: #ffe600;
-    color: #050505;
-
-    font-weight: 1000;
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.analyze-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255,230,0,0.12);
-}
-
-.analyze-btn:disabled {
-    opacity: 0.6;
-    cursor: wait;
-}
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-#loading {
-    display: none;
-
-    text-align: center;
-    padding: 45px 10px 20px;
-}
-
-.loader {
-    width: 48px;
-    height: 48px;
-
-    margin: auto;
-
-    border: 4px solid #292929;
-    border-top-color: #ffe600;
-
-    border-radius: 50%;
-
-    animation: spin 0.8s linear infinite;
-}
-
-.loading-title {
-    margin-top: 20px;
-    font-weight: 900;
-}
-
-.loading-text {
-    margin-top: 7px;
-    color: #666;
-    font-size: 0.8rem;
-}
-
-.loading-log {
-    margin: 20px auto 0;
-
-    width: min(450px, 100%);
-
-    padding: 13px;
-
-    background: #080808;
-    border: 1px solid #222;
-    border-radius: 8px;
-
-    color: #666;
-    font-family: monospace;
-    font-size: 0.65rem;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* =========================================================
-   RESULTS
-========================================================= */
-
-#results {
-    display: none;
-    padding: 100px 0;
-}
-
-.result-header {
-    margin-bottom: 30px;
-}
-
-.diagnosis-line {
-    color: #777;
-    margin-top: 10px;
-}
-
-.detected-fruit {
-    color: #ffe600;
-    font-weight: 1000;
-}
-
-/* =========================================================
-   RESULT GRID
-========================================================= */
-
-.result-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-}
-
-.card {
-    position: relative;
-
-    background: #0e0e0e;
-    border: 1px solid #282828;
-    border-radius: 18px;
-
-    padding: 28px;
-
-    overflow: hidden;
-}
-
-.card::after {
-    content: "";
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    right: -50px;
-    bottom: -50px;
-
-    background: rgba(255,230,0,0.03);
-    border-radius: 50%;
-}
-
-.card-label {
-    color: #666;
-    font-size: 0.68rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-
-    margin-bottom: 15px;
-}
-
-.personality {
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 1000;
-    color: #fff;
-}
-
-.personality-description {
-    margin-top: 12px;
-    color: #777;
-    line-height: 1.6;
-}
-
-.compatibility {
-    font-size: 4.2rem;
-    font-weight: 1000;
-    color: #ffe600;
-}
-
-.compatibility-caption {
-    color: #666;
-    font-size: 0.75rem;
-    margin-top: 5px;
-}
-
-.compatibility-bar {
-    width: 100%;
-    height: 9px;
-
-    margin-top: 18px;
-
-    background: #292929;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.compatibility-fill {
-    height: 100%;
-    width: 0;
-
-    background: #ffe600;
-    border-radius: inherit;
-
-    transition: width 1s cubic-bezier(.2,.8,.2,1);
-}
-
-/* =========================================================
-   VISUAL ANALYSIS
-========================================================= */
-
-.visual-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.stat {
-    padding: 14px;
-
-    background: #080808;
-    border: 1px solid #222;
-    border-radius: 10px;
-}
-
-.stat-name {
-    color: #555;
-    font-size: 0.62rem;
-    font-weight: 800;
-    text-transform: uppercase;
-}
-
-.stat-value {
-    margin-top: 6px;
-    font-size: 0.95rem;
-    font-weight: 900;
-}
-
-/* =========================================================
-   PAZHU CARD
-========================================================= */
-
-.pazhu-card {
-    grid-column: span 2;
-
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.pazhu-avatar {
-    flex: 0 0 100px;
-
-    width: 100px;
-    height: 100px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 22px;
-
-    background: #151500;
-    border: 1px solid #454500;
-
-    font-size: 4rem;
-}
-
-.pazhu-name {
-    color: #ffe600;
-    font-size: 0.65rem;
-    font-weight: 1000;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-}
-
-.pazhu-message {
-    color: #ddd;
-    font-size: 1.15rem;
-    line-height: 1.6;
-}
-
-/* =========================================================
-   RECIPE
-========================================================= */
-
-.recipe-name {
-    font-size: 1.5rem;
-    font-weight: 1000;
-    margin-bottom: 15px;
-}
-
-.recipe-block {
-    margin-top: 15px;
-}
-
-.recipe-block-title {
-    color: #666;
-    font-size: 0.68rem;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-}
-
-.recipe-ingredients {
-    color: #aaa;
-    line-height: 1.7;
-}
-
-.recipe-steps {
-    padding-left: 20px;
-    color: #888;
-    line-height: 1.8;
-}
-
-.recipe-why {
-    margin-top: 18px;
-    padding: 12px;
-
-    border-left: 2px solid #ffe600;
-
-    color: #666;
-    font-size: 0.8rem;
-    font-style: italic;
-}
-
-/* =========================================================
-   ACTIONS
-========================================================= */
-
-.result-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 22px;
-}
-
-.again-btn {
-    padding: 13px 20px;
-
-    background: transparent;
-    color: #aaa;
-
-    border: 1px solid #333;
-    border-radius: 9px;
-
-    cursor: pointer;
-    font-weight: 800;
-}
-
-.again-btn:hover {
-    color: #ffe600;
-    border-color: #ffe600;
-}
-
-/* =========================================================
-   CHAT
-========================================================= */
-
-#pazhu-chat {
-    padding: 100px 0;
-    max-width: 850px;
-    margin: auto;
-}
-
-.chat-heading {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 25px;
-}
-
-.chat-avatar {
-    width: 70px;
-    height: 70px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 18px;
-
-    background: #151500;
-    border: 1px solid #454500;
-
-    font-size: 3rem;
-}
-
-.chat-title {
-    font-size: 1.7rem;
-    font-weight: 1000;
-}
-
-.chat-status {
-    margin-top: 5px;
-    color: #8cff66;
-    font-size: 0.7rem;
-    font-weight: 800;
-}
-
-.chat-box {
-    min-height: 320px;
-    max-height: 450px;
-
-    padding: 22px;
-
-    background: #0d0d0d;
-    border: 1px solid #282828;
-    border-radius: 18px;
-
-    overflow-y: auto;
-}
-
-.message {
-    max-width: 82%;
-
-    padding: 13px 16px;
-
-    margin-bottom: 12px;
-
-    border-radius: 12px;
-
-    line-height: 1.5;
-    font-size: 0.9rem;
-}
-
-.pazhu-message {
-    background: #171717;
-    border: 1px solid #303030;
-    color: #ddd;
-}
-
-.user-message {
-    margin-left: auto;
-
-    background: #ffe600;
-    color: #050505;
-
-    font-weight: 700;
-}
-
-.chat-input-area {
-    display: flex;
-    gap: 9px;
-    margin-top: 12px;
-}
-
-.chat-input {
-    flex: 1;
-
-    padding: 15px;
-
-    background: #0d0d0d;
-    color: white;
-
-    border: 1px solid #303030;
-    border-radius: 10px;
-
-    outline: none;
-}
-
-.chat-input:focus {
-    border-color: #ffe600;
-}
-
-.chat-send {
-    padding: 0 22px;
-
-    background: #ffe600;
-    color: #050505;
-
-    border: none;
-    border-radius: 10px;
-
-    font-weight: 1000;
-    cursor: pointer;
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-footer {
-    padding: 35px 7%;
-
-    border-top: 1px solid #202020;
-
-    text-align: center;
-
-    color: #444;
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-#toast {
-    position: fixed;
-
-    left: 50%;
-    bottom: 25px;
-
-    transform: translate(-50%, 120px);
-
-    padding: 13px 18px;
-
-    background: #151515;
-    border: 1px solid #333;
-    border-radius: 10px;
-
-    color: #ddd;
-
-    font-size: 0.8rem;
-
-    z-index: 999;
-
-    transition: 0.3s;
-}
-
-#toast.show {
-    transform: translate(-50%, 0);
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 750px) {
-
-    header {
-        padding: 0 5%;
-    }
-
-    .nav-links {
-        display: none;
-    }
-
-    .status {
-        font-size: 0.6rem;
-    }
-
-    main {
-        width: 92%;
-    }
-
-    .hero h1 {
-        letter-spacing: -5px;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-        width: 100%;
-        max-width: 280px;
-    }
-
-    .result-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .pazhu-card {
-        grid-column: span 1;
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .visual-stats {
-        grid-template-columns: 1fr;
-    }
-
-    .chat-input-area {
-        flex-direction: column;
-    }
-
-    .chat-send {
-        padding: 14px;
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NINAK VAYYE? — Pazham.exe</title>
+
+    <!-- TensorFlow + MobileNet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #070707;
+            --card: #111111;
+            --card2: #171717;
+            --text: #f5f5f5;
+            --muted: #898989;
+            --line: #2a2a2a;
+            --lime: #c8ff00;
+            --pink: #ff4fd8;
+            --cyan: #00e5ff;
+            --orange: #ff8a00;
+            --red: #ff4264;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 15% 10%, rgba(200,255,0,.07), transparent 25%),
+                radial-gradient(circle at 85% 20%, rgba(255,79,216,.06), transparent 25%),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 32px));
+            margin: auto;
+        }
+
+        /* NAV */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid var(--line);
+            background: rgba(7,7,7,.88);
+            backdrop-filter: blur(15px);
+        }
+
+        .nav-inner {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: 1000;
+            letter-spacing: -1px;
+            font-size: 21px;
+        }
+
+        .logo span {
+            color: var(--lime);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            border: 1px solid var(--line);
+            background: #0d0d0d;
+            color: var(--text);
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .nav-btn.active,
+        .nav-btn:hover {
+            border-color: var(--lime);
+            color: var(--lime);
+        }
+
+        .online {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--lime);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .online-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--lime);
+            box-shadow: 0 0 12px var(--lime);
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 80px 0 55px;
+        }
+
+        .eyebrow {
+            color: var(--lime);
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 10vw, 110px);
+            line-height: .82;
+            letter-spacing: -7px;
+            font-weight: 1000;
+            max-width: 900px;
+        }
+
+        .hero h1 span {
+            color: var(--pink);
+        }
+
+        .hero p {
+            margin-top: 25px;
+            max-width: 620px;
+            color: #aaa;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* TECH STRIP */
+
+        .tech-strip {
+            border: 1px solid var(--line);
+            background: #0d0d0d;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin-bottom: 35px;
+        }
+
+        .tech-step {
+            padding: 17px;
+            border-right: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .tech-step:last-child {
+            border-right: none;
+        }
+
+        .tech-step small {
+            color: var(--muted);
+            display: block;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+        }
+
+        .tech-step strong {
+            font-size: 12px;
+        }
+
+        /* SECTIONS */
+
+        .section {
+            margin-bottom: 55px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 16px;
+        }
+
+        .section-title h2 {
+            font-size: 25px;
+            letter-spacing: -1px;
+        }
+
+        .section-title span {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        /* SCANNER */
+
+        .scanner-card {
+            border: 1px solid var(--line);
+            background: var(--card);
+            padding: 20px;
+        }
+
+        .drop-zone {
+            min-height: 300px;
+            border: 1px dashed #444;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.02), transparent),
+                #0c0c0c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            transition: .2s;
+        }
+
+        .drop-zone.dragover {
+            border-color: var(--lime);
+            background: rgba(200,255,0,.04);
+        }
+
+        .upload-content {
+            max-width: 430px;
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .upload-content h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .upload-content p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            border: none;
+            padding: 13px 18px;
+            border-radius: 7px;
+            font-weight: 1000;
+            font-size: 12px;
+        }
+
+        .primary-btn {
+            background: var(--lime);
+            color: #050505;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 20px rgba(200,255,0,.18);
+        }
+
+        .secondary-btn {
+            background: #1d1d1d;
+            color: white;
+            border: 1px solid #333;
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--pink);
+            color: var(--pink);
+        }
+
+        #fileInput,
+        #cameraInput {
+            display: none;
+        }
+
+        /* PREVIEW */
+
+        .preview-area {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .preview-area.show {
+            display: block;
+        }
+
+        .preview-wrapper {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            background: #000;
+        }
+
+        #previewImage {
+            display: block;
+            width: 100%;
+            max-height: 480px;
+            object-fit: contain;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: 1px solid #555;
+            background: rgba(0,0,0,.85);
+            color: white;
+            padding: 8px 11px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .analyze-row {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .analyze-row button {
+            flex: 1;
+        }
+
+        /* STATUS */
+
+        .status-box {
+            display: none;
+            margin-top: 15px;
+            border: 1px solid var(--line);
+            background: #0d0d0d;
+            padding: 18px;
+        }
+
+        .status-box.show {
+            display: block;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 13px;
+        }
+
+        .status-header strong {
+            font-size: 12px;
+        }
+
+        #statusText {
+            color: var(--lime);
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .progress {
+            height: 4px;
+            background: #222;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--lime);
+            transition: width .4s ease;
+        }
+
+        /* ERROR */
+
+        .error-box {
+            display: none;
+            margin-top: 15px;
+            padding: 14px;
+            border: 1px solid var(--red);
+            background: rgba(255,66,100,.07);
+            color: #ff8ca0;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .error-box.show {
+            display: block;
+        }
+
+        /* RESULTS */
+
+        #results {
+            display: none;
+        }
+
+        #results.show {
+            display: block;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 15px;
+        }
+
+        .result-card {
+            border: 1px solid var(--line);
+            background: var(--card);
+            padding: 22px;
+        }
+
+        .result-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .result-label {
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: 2px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .fruit-name {
+            font-size: clamp(36px, 6vw, 62px);
+            line-height: .9;
+            font-weight: 1000;
+            letter-spacing: -3px;
+        }
+
+        .fruit-subtitle {
+            color: var(--pink);
+            margin-top: 10px;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .confidence {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 7px 9px;
+            border: 1px solid #333;
+            font-size: 9px;
+            font-weight: 900;
+            color: var(--lime);
+        }
+
+        .personality {
+            font-size: 24px;
+            font-weight: 1000;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #aaa;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        /* EVIDENCE */
+
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .evidence {
+            background: #0c0c0c;
+            border: 1px solid #252525;
+            padding: 14px;
+        }
+
+        .evidence small {
+            display: block;
+            color: #777;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            margin-bottom: 7px;
+        }
+
+        .evidence strong {
+            font-size: 13px;
+        }
+
+        /* COMPATIBILITY */
+
+        .compat-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .compat-card::after {
+            content: "VIBE CHECK";
+            position: absolute;
+            right: -25px;
+            top: 25px;
+            transform: rotate(90deg);
+            color: #222;
+            font-size: 9px;
+            font-weight: 1000;
+            letter-spacing: 3px;
+        }
+
+        .compat-number {
+            font-size: 76px;
+            line-height: .85;
+            font-weight: 1000;
+            letter-spacing: -5px;
+        }
+
+        .compat-number span {
+            color: var(--lime);
+        }
+
+        .compat-bar {
+            margin-top: 18px;
+            height: 9px;
+            background: #242424;
+        }
+
+        .compat-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--pink), var(--lime));
+            transition: width 1s ease;
+        }
+
+        .percentile {
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        /* PAZHU */
+
+        .pazhu-box {
+            border-color: rgba(200,255,0,.25);
+            background:
+                radial-gradient(circle at 90% 10%, rgba(200,255,0,.08), transparent 35%),
+                var(--card);
+        }
+
+        .pazhu-head {
+            display: flex;
+            gap: 13px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .pazhu-avatar {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--lime);
+            background: #0a0a0a;
+            font-size: 27px;
+        }
+
+        .pazhu-head strong {
+            font-size: 16px;
+        }
+
+        .pazhu-head small {
+            display: block;
+            color: var(--lime);
+            font-size: 8px;
+            margin-top: 3px;
+            letter-spacing: 1px;
+        }
+
+        .pazhu-message {
+            font-size: 17px;
+            line-height: 1.5;
+            font-weight: 800;
+        }
+
+        /* RECIPE */
+
+        .recipe-name {
+            color: var(--orange);
+            font-size: 28px;
+            font-weight: 1000;
+            margin-bottom: 8px;
+        }
+
+        .recipe-description {
+            color: #aaa;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        /* SCAN AGAIN */
+
+        .again-row {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .again-row button {
+            width: 100%;
+        }
+
+        /* CHAT */
+
+        #chatSection {
+            display: none;
+        }
+
+        #chatSection.show {
+            display: block;
+        }
+
+        .chat-card {
+            border: 1px solid var(--line);
+            background: var(--card);
+        }
+
+        .chat-messages {
+            min-height: 280px;
+            max-height: 420px;
+            overflow-y: auto;
+            padding: 18px;
+        }
+
+        .message {
+            margin-bottom: 14px;
+            display: flex;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .bubble {
+            max-width: 75%;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .message.pazhu .bubble {
+            background: #1b1b1b;
+            border: 1px solid #303030;
+        }
+
+        .message.user .bubble {
+            background: var(--lime);
+            color: #050505;
+            font-weight: 800;
+        }
+
+        .chat-input-row {
+            display: flex;
+            border-top: 1px solid var(--line);
+        }
+
+        #chatInput {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: #0d0d0d;
+            color: white;
+            padding: 16px;
+        }
+
+        #sendChat {
+            width: 100px;
+            border: none;
+            background: var(--lime);
+            font-weight: 1000;
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid var(--line);
+            margin-top: 80px;
+            padding: 30px 0;
+            color: #666;
+            font-size: 10px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+            .nav-inner {
+                height: 62px;
+            }
+
+            .online {
+                display: none;
+            }
+
+            .hero {
+                padding: 55px 0 35px;
+            }
+
+            .hero h1 {
+                letter-spacing: -4px;
+            }
+
+            .tech-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tech-step:nth-child(2) {
+                border-right: none;
+            }
+
+            .tech-step:nth-child(-n+2) {
+                border-bottom: 1px solid var(--line);
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card.full {
+                grid-column: auto;
+            }
+
+            .evidence-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .analyze-row {
+                flex-direction: column;
+            }
+
+            .fruit-name {
+                font-size: 48px;
+            }
+
+            .compat-number {
+                font-size: 65px;
+            }
+        }
+    </style>
 </head>
-
 
 <body>
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+    <!-- NAV -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo">PAZHAM<span>.EXE</span></div>
 
-<header>
-
-    <div class="logo">
-        PAZHAM<span>.EXE</span>
-    </div>
-
-    <div class="header-right">
-
-        <nav class="nav-links">
-
-            <button class="nav-btn" onclick="goToScanner()">
-                🍌 SCAN
-            </button>
-
-            <button class="nav-btn" onclick="goToChat()">
-                💬 CHAT
-            </button>
-
-        </nav>
-
-        <div class="status">
-            <span class="status-dot"></span>
-            PAZHU ONLINE
-        </div>
-
-    </div>
-
-</header>
-
-
-<main>
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
-<section class="hero">
-
-    <div class="hero-badge">
-        <span>●</span>
-        THE MOST UNNECESSARY FRUIT TECHNOLOGY
-    </div>
-
-    <h1>
-        NINAK
-        <span class="yellow">VAYYE?</span>
-    </h1>
-
-    <p class="hero-subtitle">
-
-        We don't just identify your fruit.
-
-        <br>
-
-        We investigate its
-        <strong>personality, mood, condition</strong>
-        and questionable life choices.
-
-    </p>
-
-    <div class="hero-buttons">
-
-        <button class="primary-btn" onclick="goToScanner()">
-            🍌 MEET YOUR FRUIT
-        </button>
-
-        <button class="secondary-btn" onclick="goToChat()">
-            💬 TALK TO PAZHU
-        </button>
-
-    </div>
-
-    <div class="hero-note">
-        100% unnecessary · 0% medical accuracy · powered by Pazhu
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     SCANNER
-===================================================== -->
-
-<section id="scanner">
-
-    <div class="section-label">
-        01 / FRUIT SCANNER
-    </div>
-
-    <h2 class="section-title">
-        Let's investigate.
-    </h2>
-
-    <p class="section-description">
-        Upload a photo. Pazhu will inspect the evidence.
-    </p>
-
-
-    <div class="scanner-shell">
-
-        <label
-            class="upload-area"
-            id="uploadArea"
-            for="fruitInput"
-        >
-
-            <div class="upload-icon">
-                📸
+            <div class="nav-links">
+                <button class="nav-btn active" id="scanNav">SCAN</button>
+                <button class="nav-btn" id="chatNav">CHAT</button>
             </div>
 
-            <h3>
-                DROP YOUR FRUIT HERE
-            </h3>
+            <div class="online">
+                <span class="online-dot"></span>
+                PAZHU ONLINE
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="eyebrow">FRUIT INTELLIGENCE // 001</div>
+
+            <h1>
+                NINAK<br>
+                <span>VAYYE?</span>
+            </h1>
 
             <p>
-                Click to upload an image
+                Upload a fruit. Let Pazhu judge its looks, ripeness,
+                condition, mood, personality and your completely unnecessary
+                emotional compatibility.
             </p>
+        </section>
 
-            <div class="upload-hint">
-                JPG · PNG · WEBP
+        <!-- TECH PIPELINE -->
+        <div class="tech-strip">
+            <div class="tech-step">
+                <small>01 / INPUT</small>
+                <strong>FRUIT IMAGE</strong>
             </div>
 
-        </label>
+            <div class="tech-step">
+                <small>02 / VISION</small>
+                <strong>MOBILENET</strong>
+            </div>
 
+            <div class="tech-step">
+                <small>03 / SIGNALS</small>
+                <strong>COLOUR + TEXTURE</strong>
+            </div>
 
-        <input
-            id="fruitInput"
-            type="file"
-            accept="image/*"
-        >
-
-
-        <div
-            class="preview-wrapper"
-            id="previewWrapper"
-        >
-
-            <img
-                id="preview"
-                alt="Uploaded fruit"
-            >
-
-            <div
-                class="file-name"
-                id="fileName"
-            ></div>
-
+            <div class="tech-step">
+                <small>04 / VERDICT</small>
+                <strong>PAZHU.EXE</strong>
+            </div>
         </div>
 
+        <!-- SCANNER -->
+        <section class="section" id="scannerSection">
 
-        <button
-            class="analyze-btn"
-            id="analyzeBtn"
-            onclick="analyzeFruit()"
-        >
-            🔍 RUN PAZHU ANALYSIS
-        </button>
-
-
-        <div id="loading">
-
-            <div class="loader"></div>
-
-            <div class="loading-title">
-                PAZHU IS INVESTIGATING...
+            <div class="section-title">
+                <h2>01 / SCANNER</h2>
+                <span>NO FRUIT IS SAFE</span>
             </div>
 
-            <div class="loading-text" id="loadingText">
-                Looking suspiciously closely.
-            </div>
+            <div class="scanner-card">
 
-            <div class="loading-log" id="loadingLog">
-                > initializing fruit.exe
-            </div>
+                <div class="drop-zone" id="dropZone">
 
-        </div>
+                    <div class="upload-content">
 
-    </div>
+                        <div class="upload-icon">🍌</div>
 
-</section>
+                        <h3>Show me the fruit.</h3>
 
+                        <p>
+                            Drop an image here or choose one from your device.
+                            Pazhu will perform completely unnecessary fruit analysis.
+                        </p>
 
-<!-- =====================================================
-     RESULTS
-===================================================== -->
+                        <div class="button-row">
 
-<section id="results">
+                            <button class="primary-btn" id="chooseBtn">
+                                UPLOAD FRUIT
+                            </button>
 
-    <div class="result-header">
+                            <button class="secondary-btn" id="cameraBtn">
+                                📷 USE CAMERA
+                            </button>
 
-        <div class="section-label">
-            02 / DIAGNOSIS
-        </div>
+                        </div>
 
-        <h2 class="section-title">
-            Diagnosis complete. 💀
-        </h2>
+                        <input
+                            type="file"
+                            id="fileInput"
+                            accept="image/*"
+                        >
 
-        <p class="diagnosis-line">
+                        <input
+                            type="file"
+                            id="cameraInput"
+                            accept="image/*"
+                            capture="environment"
+                        >
 
-            Pazhu has reached a completely unnecessary conclusion
-            about
+                    </div>
 
-            <span
-                class="detected-fruit"
-                id="detectedFruit"
-            >
-                YOUR FRUIT
-            </span>.
+                </div>
 
-        </p>
+                <!-- PREVIEW -->
 
-    </div>
+                <div class="preview-area" id="previewArea">
 
+                    <div class="preview-wrapper">
 
-    <div class="result-grid">
+                        <img
+                            id="previewImage"
+                            alt="Selected fruit"
+                        >
 
+                        <button
+                            class="remove-btn"
+                            id="removeBtn"
+                        >
+                            REMOVE
+                        </button>
 
-        <!-- PERSONALITY -->
+                    </div>
 
-        <div class="card">
+                    <div class="analyze-row">
 
-            <div class="card-label">
-                Fruit Personality
-            </div>
+                        <button
+                            class="primary-btn"
+                            id="analyzeBtn"
+                        >
+                            ANALYZE THIS FRUIT →
+                        </button>
 
-            <div
-                class="personality"
-                id="fruitPersonality"
-            >
-                —
-            </div>
+                    </div>
 
-            <p
-                class="personality-description"
-                id="personalityDescription"
-            >
-                Pazhu is processing the evidence.
-            </p>
+                </div>
 
-        </div>
+                <!-- STATUS -->
 
+                <div class="status-box" id="statusBox">
 
-        <!-- COMPATIBILITY -->
+                    <div class="status-header">
+                        <strong>PAZHU IS THINKING...</strong>
+                        <span id="statusText">INITIALISING</span>
+                    </div>
 
-        <div class="card">
+                    <div class="progress">
+                        <div
+                            class="progress-bar"
+                            id="progressBar"
+                        ></div>
+                    </div>
 
-            <div class="card-label">
-                Emotional Compatibility
-            </div>
+                </div>
 
-            <div
-                class="compatibility"
-                id="compatibilityScore"
-            >
-                —%
-            </div>
-
-            <div class="compatibility-caption">
-                You and this fruit probably shouldn't work.
-            </div>
-
-            <div class="compatibility-bar">
+                <!-- ERROR -->
 
                 <div
-                    class="compatibility-fill"
-                    id="compatibilityBar"
+                    class="error-box"
+                    id="errorBox"
                 ></div>
 
             </div>
+        </section>
 
-        </div>
+        <!-- RESULTS -->
+        <section class="section" id="results">
 
-
-        <!-- VISUAL ANALYSIS -->
-
-        <div class="card">
-
-            <div class="card-label">
-                Visual Evidence
+            <div class="section-title">
+                <h2>02 / VERDICT</h2>
+                <span id="resultStatus">ANALYSIS COMPLETE</span>
             </div>
 
-            <div class="visual-stats">
+            <div class="result-grid">
 
-                <div class="stat">
+                <!-- FRUIT -->
+                <div class="result-card">
 
-                    <div class="stat-name">
-                        Color
+                    <div class="result-label">
+                        IDENTIFIED SPECIES
                     </div>
 
                     <div
-                        class="stat-value"
-                        id="visualColor"
+                        class="fruit-name"
+                        id="fruitName"
                     >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div class="stat-name">
-                        Ripeness
+                        UNKNOWN
                     </div>
 
                     <div
-                        class="stat-value"
-                        id="visualRipeness"
+                        class="fruit-subtitle"
+                        id="fruitSubtitle"
                     >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div class="stat-name">
-                        Condition
+                        THE FRUIT HAS ENTERED THE CHAT.
                     </div>
 
                     <div
-                        class="stat-value"
-                        id="visualCondition"
+                        class="confidence"
+                        id="confidence"
                     >
-                        —
+                        CONFIDENCE: --
+                    </div>
+
+                </div>
+
+                <!-- PERSONALITY -->
+                <div class="result-card">
+
+                    <div class="result-label">
+                        FRUIT PERSONALITY
+                    </div>
+
+                    <div
+                        class="personality"
+                        id="personality"
+                    >
+                        --
+                    </div>
+
+                    <div
+                        class="description"
+                        id="personalityDescription"
+                    >
+                        Pazhu is still judging.
+                    </div>
+
+                </div>
+
+                <!-- VISUAL EVIDENCE -->
+                <div class="result-card full">
+
+                    <div class="result-label">
+                        VISUAL EVIDENCE
+                    </div>
+
+                    <div class="evidence-grid">
+
+                        <div class="evidence">
+                            <small>COLOUR</small>
+                            <strong id="color">--</strong>
+                        </div>
+
+                        <div class="evidence">
+                            <small>RIPENESS</small>
+                            <strong id="ripeness">--</strong>
+                        </div>
+
+                        <div class="evidence">
+                            <small>CONDITION</small>
+                            <strong id="condition">--</strong>
+                        </div>
+
+                        <div class="evidence">
+                            <small>MOOD</small>
+                            <strong id="mood">--</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- COMPATIBILITY -->
+                <div class="result-card compat-card">
+
+                    <div class="result-label">
+                        EMOTIONAL COMPATIBILITY
+                    </div>
+
+                    <div class="compat-number">
+                        <span id="compatibilityScore">--</span>%
+                    </div>
+
+                    <div class="compat-bar">
+                        <div
+                            class="compat-fill"
+                            id="compatibilityBar"
+                        ></div>
+                    </div>
+
+                    <div
+                        class="percentile"
+                        id="compatibilityPercentile"
+                    >
+                        CALCULATING VIBE...
+                    </div>
+
+                </div>
+
+                <!-- PAZHU -->
+                <div class="result-card pazhu-box">
+
+                    <div class="pazhu-head">
+
+                        <div class="pazhu-avatar">
+                            🍌
+                        </div>
+
+                        <div>
+                            <strong>PAZHU</strong>
+                            <small>FRUIT EXPERT / PROFESSIONAL HATER</small>
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="pazhu-message"
+                        id="pazhuMessage"
+                    >
+                        Upload something first. I have standards.
+                    </div>
+
+                </div>
+
+                <!-- COMPATIBILITY MESSAGE -->
+                <div class="result-card full">
+
+                    <div class="result-label">
+                        PAZHU'S VIBE REPORT
+                    </div>
+
+                    <div
+                        class="description"
+                        id="compatibilityMessage"
+                    >
+                        --
+                    </div>
+
+                </div>
+
+                <!-- RECIPE -->
+                <div class="result-card full">
+
+                    <div class="result-label">
+                        COMPLETELY QUESTIONABLE RECIPE
+                    </div>
+
+                    <div
+                        class="recipe-name"
+                        id="recipeName"
+                    >
+                        --
+                    </div>
+
+                    <div
+                        class="recipe-description"
+                        id="recipeDescription"
+                    >
+                        --
                     </div>
 
                 </div>
 
             </div>
 
-        </div>
+            <div class="again-row">
 
+                <button
+                    class="secondary-btn"
+                    id="scanAgainBtn"
+                >
+                    ← SCAN ANOTHER FRUIT
+                </button>
 
-        <!-- MOOD -->
-
-        <div class="card">
-
-            <div class="card-label">
-                Current Fruit Mood
             </div>
 
-            <div
-                class="personality"
-                id="fruitMood"
-            >
-                —
+        </section>
+
+        <!-- CHAT -->
+        <section
+            class="section"
+            id="chatSection"
+        >
+
+            <div class="section-title">
+                <h2>03 / CHAT WITH PAZHU</h2>
+                <span>HE DEFINITELY KNOWS EVERYTHING</span>
             </div>
 
-        </div>
-
-
-        <!-- PAZHU -->
-
-        <div class="card pazhu-card">
-
-            <div class="pazhu-avatar">
-                🍌
-            </div>
-
-            <div>
-
-                <div class="pazhu-name">
-                    PAZHU.EXE
-                </div>
+            <div class="chat-card">
 
                 <div
-                    class="pazhu-message"
-                    id="pazhuMessage"
+                    class="chat-messages"
+                    id="chatMessages"
                 >
-                    Pazhu is still deciding whether your fruit
-                    deserves respect.
+
+                    <div class="message pazhu">
+
+                        <div class="bubble">
+                            Yo. I'm Pazhu 🍌<br><br>
+                            Ask me about fruits, recipes, life,
+                            or something completely unrelated.
+                            I will probably judge you anyway.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="chat-input-row">
+
+                    <input
+                        type="text"
+                        id="chatInput"
+                        placeholder="Ask Pazhu something..."
+                        autocomplete="off"
+                    >
+
+                    <button id="sendChat">
+                        SEND
+                    </button>
+
                 </div>
 
             </div>
 
-        </div>
+        </section>
 
+    </main>
 
-        <!-- RECIPE -->
+    <footer>
+        NINAK VAYYE? × PAZHAM.EXE
+        <br><br>
+        BUILT FOR ABSOLUTELY NECESSARY FRUIT RESEARCH.
+    </footer>
 
-        <div class="card"
-             style="grid-column: span 2;">
 
-            <div class="card-label">
-                Recommended Action
-            </div>
+    <script>
 
-            <div
-                class="recipe-name"
-                id="recipeName"
-            >
-                Waiting for Pazhu...
-            </div>
+        /* =========================================================
+           GLOBAL STATE
+        ========================================================= */
 
-            <div class="recipe-block">
+        let selectedFile = null;
+        let model = null;
+        let currentAnalysis = null;
 
-                <div class="recipe-block-title">
-                    Ingredients
-                </div>
 
-                <div
-                    class="recipe-ingredients"
-                    id="recipeIngredients"
-                >
-                    —
-                </div>
+        /* =========================================================
+           ELEMENTS
+        ========================================================= */
 
-            </div>
+        const fileInput = document.getElementById("fileInput");
+        const cameraInput = document.getElementById("cameraInput");
 
-            <div class="recipe-block">
+        const chooseBtn = document.getElementById("chooseBtn");
+        const cameraBtn = document.getElementById("cameraBtn");
 
-                <div class="recipe-block-title">
-                    How to make it
-                </div>
+        const dropZone = document.getElementById("dropZone");
 
-                <ol
-                    class="recipe-steps"
-                    id="recipeSteps"
-                >
-                </ol>
+        const previewArea = document.getElementById("previewArea");
+        const previewImage = document.getElementById("previewImage");
+        const removeBtn = document.getElementById("removeBtn");
+        const analyzeBtn = document.getElementById("analyzeBtn");
 
-            </div>
+        const statusBox = document.getElementById("statusBox");
+        const statusText = document.getElementById("statusText");
+        const progressBar = document.getElementById("progressBar");
 
-            <div
-                class="recipe-why"
-                id="recipeWhy"
-            >
-                Pazhu has not approved a recipe yet.
-            </div>
+        const errorBox = document.getElementById("errorBox");
 
-        </div>
+        const results = document.getElementById("results");
 
-    </div>
+        const chatSection = document.getElementById("chatSection");
 
+        const scanNav = document.getElementById("scanNav");
+        const chatNav = document.getElementById("chatNav");
 
-    <div class="result-actions">
 
-        <button
-            class="again-btn"
-            onclick="scanAgain()"
-        >
-            ↻ SCAN ANOTHER FRUIT
-        </button>
+        /* =========================================================
+           FILE SELECTION
+        ========================================================= */
 
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     PAZHU CHAT
-===================================================== -->
-
-<section id="pazhu-chat">
-
-    <div class="chat-heading">
-
-        <div class="chat-avatar">
-            🍌
-        </div>
-
-        <div>
-
-            <div class="chat-title">
-                PAZHU.EXE
-            </div>
-
-            <div class="chat-status">
-                ● ONLINE & JUDGING
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div
-        class="chat-box"
-        id="chatBox"
-    >
-
-        <div class="message pazhu-message">
-
-            🍌 Yo. I'm Pazhu.
-
-            <br><br>
-
-            Ask me anything.
-
-            <br>
-
-            Fruit questions preferred.
-            Life advice will be judged.
-
-        </div>
-
-    </div>
-
-
-    <div class="chat-input-area">
-
-        <input
-            class="chat-input"
-            id="chatInput"
-            type="text"
-            placeholder="Ask Pazhu something..."
-            autocomplete="off"
-        >
-
-        <button
-            class="chat-send"
-            onclick="sendMessage()"
-        >
-            SEND
-        </button>
-
-    </div>
-
-</section>
-
-</main>
-
-
-<footer>
-    PAZHAM.EXE © 2026 — Making fruit unnecessarily complicated.
-</footer>
-
-
-<div id="toast"></div>
-
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
-<script>
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const fruitInput =
-    document.getElementById("fruitInput");
-
-const preview =
-    document.getElementById("preview");
-
-const previewWrapper =
-    document.getElementById("previewWrapper");
-
-const analyzeBtn =
-    document.getElementById("analyzeBtn");
-
-const uploadArea =
-    document.getElementById("uploadArea");
-
-const fileName =
-    document.getElementById("fileName");
-
-const loadingText =
-    document.getElementById("loadingText");
-
-const loadingLog =
-    document.getElementById("loadingLog");
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function goToScanner() {
-
-    document
-        .getElementById("scanner")
-        .scrollIntoView({
-            behavior: "smooth"
+        chooseBtn.addEventListener("click", () => {
+            fileInput.click();
         });
 
-}
-
-
-function goToChat() {
-
-    document
-        .getElementById("pazhu-chat")
-        .scrollIntoView({
-            behavior: "smooth"
+        cameraBtn.addEventListener("click", () => {
+            cameraInput.click();
         });
 
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(message) {
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-    setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2500);
-
-}
-
-
-/* =========================================================
-   FILE UPLOAD
-========================================================= */
-
-fruitInput.addEventListener(
-    "change",
-    handleFile
-);
-
-
-function handleFile() {
-
-    const file =
-        fruitInput.files[0];
-
-    if (!file) return;
-
-
-    if (!file.type.startsWith("image/")) {
-
-        showToast(
-            "That is not an image. Pazhu is disappointed. 😭"
-        );
-
-        fruitInput.value = "";
-
-        return;
-    }
-
-
-    const imageURL =
-        URL.createObjectURL(file);
-
-
-    preview.src =
-        imageURL;
-
-
-    previewWrapper.classList.add(
-        "active"
-    );
-
-
-    fileName.textContent =
-        file.name;
-
-
-    analyzeBtn.style.display =
-        "block";
-
-
-    document
-        .getElementById("results")
-        .style.display = "none";
-
-
-    showToast(
-        "Fruit acquired. 🍌"
-    );
-
-}
-
-
-/* =========================================================
-   DRAG & DROP
-========================================================= */
-
-["dragenter", "dragover"].forEach(eventName => {
-
-    uploadArea.addEventListener(
-        eventName,
-        event => {
-
-            event.preventDefault();
-
-            uploadArea.classList.add(
-                "dragging"
-            );
-
-        }
-    );
-
-});
-
-
-["dragleave", "drop"].forEach(eventName => {
-
-    uploadArea.addEventListener(
-        eventName,
-        event => {
-
-            event.preventDefault();
-
-            uploadArea.classList.remove(
-                "dragging"
-            );
-
-        }
-    );
-
-});
-
-
-uploadArea.addEventListener(
-    "drop",
-    event => {
-
-        const file =
-            event.dataTransfer.files[0];
-
-        if (!file) return;
-
-        fruitInput.files =
-            event.dataTransfer.files;
-
-        handleFile();
-
-    }
-);
-
-
-/* =========================================================
-   LOADING MESSAGES
-========================================================= */
-
-const loadingMessages = [
-
-    "Looking suspiciously closely.",
-
-    "Checking fruit vibes.",
-
-    "Judging structural integrity.",
-
-    "Interrogating the banana database.",
-
-    "Calculating emotional compatibility.",
-
-    "Consulting Pazhu's potassium-powered brain.",
-
-    "Searching for evidence of fruit drama."
-
-];
-
-
-let loadingInterval;
-
-
-function startLoadingAnimation() {
-
-    let index = 0;
-
-    loadingText.textContent =
-        loadingMessages[0];
-
-
-    loadingLog.textContent =
-        "> loading vision model";
-
-
-    loadingInterval =
-        setInterval(() => {
-
-            index =
-                (index + 1) %
-                loadingMessages.length;
-
-
-            loadingText.textContent =
-                loadingMessages[index];
-
-
-            loadingLog.textContent =
-                "> " +
-                loadingMessages[index]
-                    .toLowerCase();
-
-        }, 1200);
-
-}
-
-
-function stopLoadingAnimation() {
-
-    clearInterval(
-        loadingInterval
-    );
-
-}
-
-
-/* =========================================================
-   ANALYZE
-========================================================= */
-
-async function analyzeFruit() {
-
-    const file =
-        fruitInput.files[0];
-
-
-    if (!file) {
-
-        showToast(
-            "Upload a fruit first 🍌"
-        );
-
-        return;
-
-    }
-
-
-    analyzeBtn.disabled =
-        true;
-
-    analyzeBtn.style.display =
-        "none";
-
-
-    document
-        .getElementById("loading")
-        .style.display = "block";
-
-
-    startLoadingAnimation();
-
-
-    try {
-
-        /*
-        -----------------------------------------------------
-        LOAD MOBILENET
-        -----------------------------------------------------
-        */
-
-        if (!window.pazhuModel) {
-
-            loadingLog.textContent =
-                "> loading MobileNet...";
-
-            window.pazhuModel =
-                await mobilenet.load();
-
-        }
-
-
-        /*
-        -----------------------------------------------------
-        CREATE IMAGE
-        -----------------------------------------------------
-        */
-
-        const image =
-            new Image();
-
-        const imageURL =
-            URL.createObjectURL(file);
-
-
-        image.src =
-            imageURL;
-
-
-        await new Promise(
-            (resolve, reject) => {
-
-                image.onload =
-                    resolve;
-
-                image.onerror =
-                    reject;
-
+        fileInput.addEventListener("change", event => {
+            const file = event.target.files[0];
+
+            if (file) {
+                handleFile(file);
             }
-        );
+        });
+
+        cameraInput.addEventListener("change", event => {
+            const file = event.target.files[0];
+
+            if (file) {
+                handleFile(file);
+            }
+        });
 
 
-        /*
-        -----------------------------------------------------
-        VISION
-        -----------------------------------------------------
-        */
+        /* =========================================================
+           DRAG & DROP
+        ========================================================= */
 
-        loadingLog.textContent =
-            "> analyzing visual evidence";
+        ["dragenter", "dragover"].forEach(eventName => {
 
+            dropZone.addEventListener(eventName, event => {
 
-        const predictions =
-            await window.pazhuModel.classify(
-                image,
-                5
-            );
+                event.preventDefault();
 
+                dropZone.classList.add("dragover");
 
-        console.log(
-            "🍌 PAZHU VISION:",
-            predictions
-        );
+            });
 
+        });
 
-        /*
-        -----------------------------------------------------
-        LOCAL VISUAL ANALYSIS
-        -----------------------------------------------------
-        */
+        ["dragleave", "drop"].forEach(eventName => {
 
-        const visualData =
-            analyzeImagePixels(
-                image
-            );
+            dropZone.addEventListener(eventName, event => {
 
+                event.preventDefault();
 
-        console.log(
-            "🍌 VISUAL FEATURES:",
-            visualData
-        );
+                dropZone.classList.remove("dragover");
 
+            });
 
-        /*
-        -----------------------------------------------------
-        SEND EVERYTHING TO BACKEND
-        -----------------------------------------------------
-        */
+        });
 
-        const formData =
-            new FormData();
+        dropZone.addEventListener("drop", event => {
+
+            const file = event.dataTransfer.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+                showError("Please give Pazhu an actual image. He cannot scan your PDF.");
+                return;
+            }
+
+            handleFile(file);
+
+        });
 
 
-        formData.append(
-            "image",
-            file
-        );
+        /* =========================================================
+           HANDLE IMAGE
+        ========================================================= */
 
+        function handleFile(file) {
 
-        formData.append(
-            "prediction",
-            JSON.stringify(
-                predictions
-            )
-        );
+            if (!file.type.startsWith("image/")) {
 
+                showError("That isn't an image.");
 
-        formData.append(
-            "visual",
-            JSON.stringify(
-                visualData
-            )
-        );
+                return;
+            }
 
+            selectedFile = file;
 
-        loadingLog.textContent =
-            "> asking Pazhu for diagnosis";
+            clearError();
 
+            const reader = new FileReader();
 
-        const response =
-            await fetch(
-                "/api/analyze",
-                {
-                    method: "POST",
-                    body: formData
-                }
-            );
+            reader.onload = event => {
 
+                previewImage.src = event.target.result;
 
-        if (!response.ok) {
+                previewArea.classList.add("show");
 
-            throw new Error(
-                "Server returned " +
-                response.status
-            );
+                dropZone.style.display = "none";
 
+                results.classList.remove("show");
+
+            };
+
+            reader.readAsDataURL(file);
         }
 
 
-        const data =
-            await response.json();
+        /* =========================================================
+           REMOVE IMAGE
+        ========================================================= */
 
-
-        console.log(
-            "🍌 PAZHU DIAGNOSIS:",
-            data
-        );
-
-
-        if (!data.success) {
-
-            throw new Error(
-                data.message ||
-                "Pazhu refused to diagnose."
-            );
-
-        }
-
-
-        /*
-        -----------------------------------------------------
-        DISPLAY RESULT
-        -----------------------------------------------------
-        */
-
-        displayResults(
-            data
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "🍌 ANALYSIS ERROR:",
-            error
-        );
-
-
-        showToast(
-            "Pazhu crashed 😭 — " +
-            error.message
-        );
-
-
-        analyzeBtn.style.display =
-            "block";
-
-
-        analyzeBtn.disabled =
-            false;
-
-    } finally {
-
-        stopLoadingAnimation();
-
+        removeBtn.addEventListener("click", resetScanner);
 
         document
-            .getElementById("loading")
-            .style.display = "none";
-
-    }
-
-}
+            .getElementById("scanAgainBtn")
+            .addEventListener("click", resetScanner);
 
 
-/* =========================================================
-   IMAGE PIXEL ANALYSIS
-========================================================= */
+        function resetScanner() {
 
-function analyzeImagePixels(image) {
+            selectedFile = null;
 
-    const canvas =
-        document.createElement("canvas");
+            previewImage.src = "";
 
-    const size = 120;
+            previewArea.classList.remove("show");
 
-    canvas.width =
-        size;
+            dropZone.style.display = "flex";
 
-    canvas.height =
-        size;
+            results.classList.remove("show");
+
+            statusBox.classList.remove("show");
+
+            clearError();
+
+            fileInput.value = "";
+            cameraInput.value = "";
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
 
 
-    const ctx =
-        canvas.getContext(
-            "2d",
-            {
-                willReadFrequently: true
+        /* =========================================================
+           ERROR HANDLING
+        ========================================================= */
+
+        function showError(message) {
+
+            errorBox.textContent = message;
+
+            errorBox.classList.add("show");
+
+        }
+
+        function clearError() {
+
+            errorBox.textContent = "";
+
+            errorBox.classList.remove("show");
+
+        }
+
+
+        /* =========================================================
+           LOAD MOBILENET
+        ========================================================= */
+
+        async function loadModel() {
+
+            if (model) {
+                return model;
+            }
+
+            statusText.textContent = "LOADING VISION";
+
+            progressBar.style.width = "15%";
+
+            model = await mobilenet.load();
+
+            progressBar.style.width = "35%";
+
+            return model;
+        }
+
+
+        /* =========================================================
+           VISUAL IMAGE ANALYSIS
+        ========================================================= */
+
+        async function extractVisualFeatures(file) {
+
+            return new Promise((resolve, reject) => {
+
+                const img = new Image();
+
+                const url = URL.createObjectURL(file);
+
+                img.onload = () => {
+
+                    try {
+
+                        const canvas = document.createElement("canvas");
+
+                        const size = 100;
+
+                        canvas.width = size;
+                        canvas.height = size;
+
+                        const ctx = canvas.getContext("2d", {
+                            willReadFrequently: true
+                        });
+
+                        ctx.drawImage(img, 0, 0, size, size);
+
+                        const pixels = ctx.getImageData(
+                            0,
+                            0,
+                            size,
+                            size
+                        ).data;
+
+                        let totalR = 0;
+                        let totalG = 0;
+                        let totalB = 0;
+
+                        let brightness = 0;
+
+                        let darkPixels = 0;
+                        let brightPixels = 0;
+
+                        let yellowPixels = 0;
+                        let redPixels = 0;
+                        let greenPixels = 0;
+                        let orangePixels = 0;
+
+                        let saturatedPixels = 0;
+
+                        const pixelCount = pixels.length / 4;
+
+                        for (let i = 0; i < pixels.length; i += 4) {
+
+                            const r = pixels[i];
+                            const g = pixels[i + 1];
+                            const b = pixels[i + 2];
+
+                            totalR += r;
+                            totalG += g;
+                            totalB += b;
+
+                            const value =
+                                (r + g + b) / 3;
+
+                            brightness += value;
+
+                            if (value < 65) {
+                                darkPixels++;
+                            }
+
+                            if (value > 205) {
+                                brightPixels++;
+                            }
+
+                            const max = Math.max(r, g, b);
+                            const min = Math.min(r, g, b);
+
+                            const saturation =
+                                max === 0
+                                    ? 0
+                                    : (max - min) / max;
+
+                            if (saturation > 0.45) {
+                                saturatedPixels++;
+                            }
+
+                            if (
+                                r > 130 &&
+                                g > 100 &&
+                                b < 100 &&
+                                r > b * 1.3
+                            ) {
+                                yellowPixels++;
+                            }
+
+                            if (
+                                r > 140 &&
+                                r > g * 1.25 &&
+                                r > b * 1.25
+                            ) {
+                                redPixels++;
+                            }
+
+                            if (
+                                g > r * 1.15 &&
+                                g > b * 1.1
+                            ) {
+                                greenPixels++;
+                            }
+
+                            if (
+                                r > 150 &&
+                                g > 65 &&
+                                g < 180 &&
+                                b < 80
+                            ) {
+                                orangePixels++;
+                            }
+                        }
+
+                        const avgR =
+                            Math.round(totalR / pixelCount);
+
+                        const avgG =
+                            Math.round(totalG / pixelCount);
+
+                        const avgB =
+                            Math.round(totalB / pixelCount);
+
+                        const avgBrightness =
+                            brightness / pixelCount;
+
+                        const darkRatio =
+                            darkPixels / pixelCount;
+
+                        const brightRatio =
+                            brightPixels / pixelCount;
+
+                        const saturationRatio =
+                            saturatedPixels / pixelCount;
+
+                        let dominantColor = "mixed";
+
+                        const ratios = {
+                            yellow: yellowPixels / pixelCount,
+                            red: redPixels / pixelCount,
+                            green: greenPixels / pixelCount,
+                            orange: orangePixels / pixelCount
+                        };
+
+                        const strongest =
+                            Object.entries(ratios)
+                                .sort((a, b) => b[1] - a[1])[0];
+
+                        if (strongest[1] > 0.08) {
+                            dominantColor = strongest[0];
+                        }
+
+                        resolve({
+
+                            averageR: avgR,
+                            averageG: avgG,
+                            averageB: avgB,
+
+                            brightness:
+                                Number(
+                                    (avgBrightness / 255).toFixed(3)
+                                ),
+
+                            darkRatio:
+                                Number(darkRatio.toFixed(3)),
+
+                            brightRatio:
+                                Number(brightRatio.toFixed(3)),
+
+                            saturationRatio:
+                                Number(saturationRatio.toFixed(3)),
+
+                            color: dominantColor,
+
+                            yellowRatio:
+                                Number(ratios.yellow.toFixed(3)),
+
+                            redRatio:
+                                Number(ratios.red.toFixed(3)),
+
+                            greenRatio:
+                                Number(ratios.green.toFixed(3)),
+
+                            orangeRatio:
+                                Number(ratios.orange.toFixed(3))
+
+                        });
+
+                    } catch (error) {
+
+                        reject(error);
+
+                    } finally {
+
+                        URL.revokeObjectURL(url);
+
+                    }
+                };
+
+                img.onerror = () => {
+
+                    URL.revokeObjectURL(url);
+
+                    reject(
+                        new Error("Could not read the image.")
+                    );
+
+                };
+
+                img.src = url;
+
+            });
+
+        }
+
+
+        /* =========================================================
+           ANALYZE
+        ========================================================= */
+
+        analyzeBtn.addEventListener("click", analyzeFruit);
+
+
+        async function analyzeFruit() {
+
+            if (!selectedFile) {
+
+                showError("Upload a fruit first.");
+
+                return;
+            }
+
+            clearError();
+
+            results.classList.remove("show");
+
+            statusBox.classList.add("show");
+
+            progressBar.style.width = "5%";
+
+            analyzeBtn.disabled = true;
+
+            try {
+
+                statusText.textContent = "READING IMAGE";
+
+                const visual =
+                    await extractVisualFeatures(selectedFile);
+
+                progressBar.style.width = "25%";
+
+                statusText.textContent =
+                    "LOADING FRUIT VISION";
+
+                const visionModel =
+                    await loadModel();
+
+                progressBar.style.width = "45%";
+
+                statusText.textContent =
+                    "IDENTIFYING FRUIT";
+
+                const predictions =
+                    await visionModel.classify(
+                        previewImage,
+                        5
+                    );
+
+                progressBar.style.width = "60%";
+
+                statusText.textContent =
+                    "ASKING PAZHU";
+
+                const formData = new FormData();
+
+                formData.append(
+                    "image",
+                    selectedFile
+                );
+
+                formData.append(
+                    "prediction",
+                    JSON.stringify(predictions)
+                );
+
+                formData.append(
+                    "visual",
+                    JSON.stringify(visual)
+                );
+
+                const response =
+                    await fetch("/api/analyze", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                progressBar.style.width = "80%";
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `Server error: ${response.status}`
+                    );
+                }
+
+                const data =
+                    await response.json();
+
+                currentAnalysis =
+                    data.analysis ||
+                    data.result ||
+                    data;
+
+                progressBar.style.width = "100%";
+
+                statusText.textContent =
+                    "VERDICT READY";
+
+                renderResults(
+                    currentAnalysis,
+                    visual,
+                    predictions
+                );
+
+                setTimeout(() => {
+
+                    statusBox.classList.remove("show");
+
+                    results.classList.add("show");
+
+                    results.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }, 500);
+
+            } catch (error) {
+
+                console.error(error);
+
+                showError(
+                    "Pazhu crashed. " +
+                    (error.message || "Something went wrong.")
+                );
+
+                statusBox.classList.remove("show");
+
+            } finally {
+
+                analyzeBtn.disabled = false;
+
+            }
+        }
+
+
+        /* =========================================================
+           SAFE VALUE HELPERS
+        ========================================================= */
+
+        function textValue(value, fallback = "--") {
+
+            if (
+                value === undefined ||
+                value === null ||
+                value === ""
+            ) {
+                return fallback;
+            }
+
+            return String(value);
+        }
+
+
+        function numericScore(value, fallback = 67) {
+
+            if (
+                value === undefined ||
+                value === null ||
+                value === ""
+            ) {
+                return fallback;
+            }
+
+            const number =
+                parseFloat(
+                    String(value).replace(/[^\d.]/g, "")
+                );
+
+            if (!Number.isFinite(number) || number <= 0) {
+                return fallback;
+            }
+
+            return Math.max(
+                18,
+                Math.min(
+                    97,
+                    Math.round(number)
+                )
+            );
+        }
+
+
+        function formatRecipe(recipe) {
+
+            if (!recipe) {
+
+                return {
+                    name: "PAZHU HAS NO IDEA",
+                    description:
+                        "The recipe database has emotionally disconnected."
+                };
+            }
+
+            if (typeof recipe === "string") {
+
+                return {
+                    name: recipe,
+                    description:
+                        "A highly questionable Pazhu-certified experiment."
+                };
+            }
+
+            return {
+                name:
+                    recipe.name ||
+                    recipe.title ||
+                    "MYSTERY FRUIT EXPERIMENT",
+
+                description:
+                    recipe.description ||
+                    recipe.instructions ||
+                    "Proceed with caution. Pazhu takes no responsibility."
+            };
+        }
+
+
+        /* =========================================================
+           RENDER RESULTS
+        ========================================================= */
+
+        function renderResults(
+            analysis,
+            visual,
+            predictions
+        ) {
+
+            analysis =
+                analysis || {};
+
+            const fruit =
+                textValue(
+                    analysis.fruit ||
+                    analysis.species ||
+                    analysis.fruitName,
+                    "MYSTERY FRUIT"
+                );
+
+            const emoji =
+                textValue(
+                    analysis.emoji,
+                    "🍌"
+                );
+
+            const subtitle =
+                textValue(
+                    analysis.fruitSubtitle ||
+                    analysis.subtitle,
+                    `${emoji} THE FRUIT HAS ENTERED THE CHAT.`
+                );
+
+            const personality =
+                textValue(
+                    analysis.personality,
+                    "QUESTIONABLE ENERGY"
+                );
+
+            const personalityDescription =
+                textValue(
+                    analysis.personalityDescription ||
+                    analysis.personality_description,
+                    "Pazhu is still judging this specimen."
+                );
+
+            const color =
+                textValue(
+                    analysis.color ||
+                    visual.color,
+                    "MIXED"
+                );
+
+            const ripeness =
+                textValue(
+                    analysis.ripeness ||
+                    analysis.ripenessLabel,
+                    getFallbackRipeness(visual)
+                );
+
+            const condition =
+                textValue(
+                    analysis.condition,
+                    getFallbackCondition(visual)
+                );
+
+            const mood =
+                textValue(
+                    analysis.mood,
+                    getFallbackMood(visual)
+                );
+
+            const score =
+                numericScore(
+                    analysis.compatibility ??
+                    analysis.compatibilityScore,
+                    getFallbackCompatibility(visual)
+                );
+
+            const percentile =
+                analysis.compatibilityPercentile ||
+                analysis.percentile ||
+                `${Math.max(1, Math.min(99, score + 3))}TH PERCENTILE`;
+
+            const pazhuMessage =
+                textValue(
+                    analysis.pazhuMessage ||
+                    analysis.pazhu_message,
+                    "Interesting. I have concerns."
+                );
+
+            const compatibilityMessage =
+                textValue(
+                    analysis.compatibilityMessage ||
+                    analysis.compatibility_message,
+                    "Your fruit compatibility is concerningly acceptable."
+                );
+
+            const recipe =
+                formatRecipe(
+                    analysis.recipe ||
+                    analysis.recipeData
+                );
+
+            const confidence =
+                textValue(
+                    analysis.confidence,
+                    predictions && predictions.length
+                        ? `${Math.round(
+                            (predictions[0].probability || 0) * 100
+                        )}%`
+                        : "--"
+                );
+
+
+            document.getElementById("fruitName").textContent =
+                `${emoji} ${fruit}`;
+
+            document.getElementById("fruitSubtitle").textContent =
+                subtitle;
+
+            document.getElementById("personality").textContent =
+                personality;
+
+            document.getElementById("personalityDescription").textContent =
+                personalityDescription;
+
+            document.getElementById("color").textContent =
+                String(color).toUpperCase();
+
+            document.getElementById("ripeness").textContent =
+                String(ripeness).toUpperCase();
+
+            document.getElementById("condition").textContent =
+                String(condition).toUpperCase();
+
+            document.getElementById("mood").textContent =
+                String(mood).toUpperCase();
+
+            document.getElementById("confidence").textContent =
+                `CONFIDENCE: ${confidence}`;
+
+            document.getElementById("compatibilityScore").textContent =
+                score;
+
+            document.getElementById("compatibilityPercentile").textContent =
+                String(percentile).toUpperCase();
+
+            document.getElementById("pazhuMessage").textContent =
+                pazhuMessage;
+
+            document.getElementById("compatibilityMessage").textContent =
+                compatibilityMessage;
+
+            document.getElementById("recipeName").textContent =
+                recipe.name;
+
+            document.getElementById("recipeDescription").textContent =
+                recipe.description;
+
+            requestAnimationFrame(() => {
+
+                document.getElementById(
+                    "compatibilityBar"
+                ).style.width = `${score}%`;
+
+            });
+        }
+
+
+        /* =========================================================
+           FRONTEND FALLBACKS
+        ========================================================= */
+
+        function getFallbackRipeness(visual) {
+
+            const brightness =
+                visual?.brightness ?? .5;
+
+            const saturation =
+                visual?.saturationRatio ?? .5;
+
+            if (
+                brightness > .75 &&
+                saturation > .4
+            ) {
+                return "RIPE-ISH";
+            }
+
+            if (
+                brightness < .3
+            ) {
+                return "SUSPICIOUSLY DARK";
+            }
+
+            return "MAYBE RIPE";
+        }
+
+
+        function getFallbackCondition(visual) {
+
+            const dark =
+                visual?.darkRatio ?? .2;
+
+            if (dark > .35) {
+                return "HAS SEEN THINGS";
+            }
+
+            if (dark > .18) {
+                return "SLIGHTLY SUS";
+            }
+
+            return "SURVIVING";
+        }
+
+
+        function getFallbackMood(visual) {
+
+            const saturation =
+                visual?.saturationRatio ?? .5;
+
+            if (saturation > .65) {
+                return "LOUD";
+            }
+
+            if (saturation < .25) {
+                return "TIRED";
+            }
+
+            return "UNDECIDED";
+        }
+
+
+        function getFallbackCompatibility(visual) {
+
+            const brightness =
+                visual?.brightness ?? .5;
+
+            const saturation =
+                visual?.saturationRatio ?? .5;
+
+            const dark =
+                visual?.darkRatio ?? .2;
+
+            let score =
+                55 +
+                brightness * 18 +
+                saturation * 18 -
+                dark * 12;
+
+            return Math.max(
+                18,
+                Math.min(
+                    97,
+                    Math.round(score)
+                )
+            );
+        }
+
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        scanNav.addEventListener("click", () => {
+
+            scanNav.classList.add("active");
+            chatNav.classList.remove("active");
+
+            document
+                .getElementById("scannerSection")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        });
+
+
+        chatNav.addEventListener("click", () => {
+
+            chatNav.classList.add("active");
+            scanNav.classList.remove("active");
+
+            chatSection.classList.add("show");
+
+            chatSection.scrollIntoView({
+                behavior: "smooth"
+            });
+
+        });
+
+
+        /* =========================================================
+           CHAT
+        ========================================================= */
+
+        const chatInput =
+            document.getElementById("chatInput");
+
+        const sendChat =
+            document.getElementById("sendChat");
+
+        const chatMessages =
+            document.getElementById("chatMessages");
+
+
+        sendChat.addEventListener(
+            "click",
+            sendMessage
+        );
+
+
+        chatInput.addEventListener(
+            "keydown",
+            event => {
+
+                if (event.key === "Enter") {
+                    sendMessage();
+                }
+
             }
         );
 
 
-    ctx.drawImage(
-        image,
-        0,
-        0,
-        size,
-        size
-    );
+        function sendMessage() {
 
+            const text =
+                chatInput.value.trim();
 
-    const pixels =
-        ctx.getImageData(
-            0,
-            0,
-            size,
-            size
-        ).data;
+            if (!text) {
+                return;
+            }
 
+            addChatMessage(
+                text,
+                "user"
+            );
 
-    let red = 0;
-    let green = 0;
-    let blue = 0;
+            chatInput.value = "";
 
-    let brightness = 0;
-    let darkPixels = 0;
-    let yellowPixels = 0;
+            setTimeout(() => {
 
-    const pixelCount =
-        pixels.length / 4;
+                const reply =
+                    pazhuReply(text);
 
+                addChatMessage(
+                    reply,
+                    "pazhu"
+                );
 
-    for (
-        let i = 0;
-        i < pixels.length;
-        i += 4
-    ) {
+            }, 450);
 
-        const r =
-            pixels[i];
-
-        const g =
-            pixels[i + 1];
-
-        const b =
-            pixels[i + 2];
-
-
-        red += r;
-        green += g;
-        blue += b;
-
-
-        const light =
-            (r + g + b) / 3;
-
-
-        brightness +=
-            light;
-
-
-        if (light < 55) {
-            darkPixels++;
         }
 
 
-        if (
-            r > 130 &&
-            g > 100 &&
-            b < 90
-        ) {
-            yellowPixels++;
-        }
-
-    }
-
-
-    red =
-        Math.round(
-            red / pixelCount
-        );
-
-    green =
-        Math.round(
-            green / pixelCount
-        );
-
-    blue =
-        Math.round(
-            blue / pixelCount
-        );
-
-
-    brightness =
-        Math.round(
-            brightness / pixelCount
-        );
-
-
-    const darkRatio =
-        darkPixels /
-        pixelCount;
-
-
-    const yellowRatio =
-        yellowPixels /
-        pixelCount;
-
-
-    let color;
-
-    if (
-        yellowRatio > 0.18
-    ) {
-
-        color =
-            "YELLOW";
-
-    } else if (
-        red > green * 1.18
-    ) {
-
-        color =
-            "RED";
-
-    } else if (
-        green > red * 1.12
-    ) {
-
-        color =
-            "GREEN";
-
-    } else if (
-        brightness < 75
-    ) {
-
-        color =
-            "DARK";
-
-    } else {
-
-        color =
-            "MIXED";
-
-    }
-
-
-    let condition;
-
-    if (
-        darkRatio > 0.18
-    ) {
-
-        condition =
-            "SPOTTY";
-
-    } else if (
-        darkRatio > 0.08
-    ) {
-
-        condition =
-            "MARKED";
-
-    } else {
-
-        condition =
-            "CLEAN";
-
-    }
-
-
-    let ripeness;
-
-    if (
-        yellowRatio > 0.22 &&
-        darkRatio < 0.08
-    ) {
-
-        ripeness =
-            "RIPE-ISH";
-
-    } else if (
-        green > red * 1.12
-    ) {
-
-        ripeness =
-            "UNRIPE-ISH";
-
-    } else if (
-        darkRatio > 0.18
-    ) {
-
-        ripeness =
-            "VERY RIPE";
-
-    } else {
-
-        ripeness =
-            "READY-ISH";
-
-    }
-
-
-    return {
-
-        averageRed: red,
-
-        averageGreen: green,
-
-        averageBlue: blue,
-
-        brightness,
-
-        darkRatio:
-            Number(
-                darkRatio.toFixed(3)
-            ),
-
-        yellowRatio:
-            Number(
-                yellowRatio.toFixed(3)
-            ),
-
-        color,
-
-        condition,
-
-        ripeness
-
-    };
-
-}
-
-
-/* =========================================================
-   DISPLAY RESULTS
-========================================================= */
-
-function displayResults(data) {
-
-    document.getElementById(
-        "detectedFruit"
-    ).textContent =
-        data.fruit ||
-        "UNKNOWN";
-
-
-    document.getElementById(
-        "fruitPersonality"
-    ).textContent =
-        data.personality ||
-        "CHAOTIC";
-
-
-    document.getElementById(
-        "personalityDescription"
-    ).textContent =
-        data.personalityDescription ||
-        "Pazhu has detected something suspicious.";
-
-
-    const compatibility =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                Number(
-                    data.compatibility
-                ) || 50
-            )
-        );
-
-
-    document.getElementById(
-        "compatibilityScore"
-    ).textContent =
-        compatibility + "%";
-
-
-    document.getElementById(
-        "compatibilityBar"
-    ).style.width =
-        compatibility + "%";
-
-
-    document.getElementById(
-        "fruitMood"
-    ).textContent =
-        data.mood ||
-        "🫥 UNKNOWN";
-
-
-    document.getElementById(
-        "pazhuMessage"
-    ).textContent =
-        data.roast ||
-        "Pazhu has concerns.";
-
-
-    document.getElementById(
-        "visualColor"
-    ).textContent =
-        data.color ||
-        data.visualColor ||
-        "MIXED";
-
-
-    document.getElementById(
-        "visualRipeness"
-    ).textContent =
-        data.ripeness ||
-        "UNKNOWN";
-
-
-    document.getElementById(
-        "visualCondition"
-    ).textContent =
-        data.condition ||
-        "UNKNOWN";
-
-
-    document.getElementById(
-        "recipeName"
-    ).textContent =
-        data.recipeName ||
-        "Pazhu's Mystery Recipe";
-
-
-    const ingredients =
-        Array.isArray(
-            data.recipeIngredients
-        )
-            ? data.recipeIngredients
-            : [];
-
-
-    document.getElementById(
-        "recipeIngredients"
-    ).textContent =
-        ingredients.length
-            ? ingredients.join(" · ")
-            : "Ask Pazhu.";
-
-
-    const steps =
-        Array.isArray(
-            data.recipeSteps
-        )
-            ? data.recipeSteps
-            : [];
-
-
-    document.getElementById(
-        "recipeSteps"
-    ).innerHTML =
-        steps.map(
-            step =>
-                `<li>${escapeHTML(step)}</li>`
-        ).join("");
-
-
-    document.getElementById(
-        "recipeWhy"
-    ).textContent =
-        data.recipeWhy ||
-        "Pazhu refuses to explain itself.";
-
-
-    const results =
-        document.getElementById(
-            "results"
-        );
-
-
-    results.style.display =
-        "block";
-
-
-    setTimeout(() => {
-
-        document.getElementById(
-            "compatibilityBar"
-        ).style.width =
-            compatibility + "%";
-
-    }, 100);
-
-
-    window.lastFruitAnalysis =
-        data;
-
-
-    results.scrollIntoView({
-        behavior: "smooth"
-    });
-
-}
-
-
-/* =========================================================
-   HTML ESCAPE
-========================================================= */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-}
-
-
-/* =========================================================
-   SCAN AGAIN
-========================================================= */
-
-function scanAgain() {
-
-    document.getElementById(
-        "results"
-    ).style.display =
-        "none";
-
-
-    previewWrapper.classList.remove(
-        "active"
-    );
-
-
-    analyzeBtn.style.display =
-        "none";
-
-
-    analyzeBtn.disabled =
-        false;
-
-
-    fruitInput.value =
-        "";
-
-
-    preview.src =
-        "";
-
-
-    fileName.textContent =
-        "";
-
-
-    goToScanner();
-
-}
-
-
-/* =========================================================
-   PAZHU CHAT
-========================================================= */
-
-const chatInput =
-    document.getElementById(
-        "chatInput"
-    );
-
-
-chatInput.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
+        function addChatMessage(
+            text,
+            type
         ) {
 
-            sendMessage();
+            const message =
+                document.createElement("div");
 
-        }
+            message.className =
+                `message ${type}`;
 
-    }
-);
+            const bubble =
+                document.createElement("div");
 
+            bubble.className =
+                "bubble";
 
-function sendMessage() {
+            bubble.textContent =
+                text;
 
-    const message =
-        chatInput.value.trim();
+            message.appendChild(
+                bubble
+            );
 
-
-    if (!message) return;
-
-
-    const chatBox =
-        document.getElementById(
-            "chatBox"
-        );
-
-
-    const userMessage =
-        document.createElement(
-            "div"
-        );
-
-
-    userMessage.className =
-        "message user-message";
-
-
-    userMessage.textContent =
-        message;
-
-
-    chatBox.appendChild(
-        userMessage
-    );
-
-
-    chatInput.value =
-        "";
-
-
-    chatBox.scrollTop =
-        chatBox.scrollHeight;
-
-
-    setTimeout(() => {
-
-        const reply =
-            getPazhuResponse(
+            chatMessages.appendChild(
                 message
             );
 
+            chatMessages.scrollTop =
+                chatMessages.scrollHeight;
 
-        const pazhuMessage =
-            document.createElement(
-                "div"
-            );
-
-
-        pazhuMessage.className =
-            "message pazhu-message";
+        }
 
 
-        pazhuMessage.textContent =
-            "🍌 " + reply;
+        function pazhuReply(text) {
+
+            const lower =
+                text.toLowerCase();
+
+            if (
+                lower.includes("banana")
+            ) {
+
+                return "Banana? Respectable. Also dangerously overconfident.";
+
+            }
+
+            if (
+                lower.includes("apple")
+            ) {
+
+                return "Apple has main-character energy. I don't trust it.";
+
+            }
+
+            if (
+                lower.includes("mango")
+            ) {
+
+                return "Mango is basically summer with commitment issues.";
+
+            }
+
+            if (
+                lower.includes("recipe") ||
+                lower.includes("cook") ||
+                lower.includes("food")
+            ) {
+
+                return "Tell me the fruit and I will invent something that probably should not exist.";
+
+            }
+
+            if (
+                lower.includes("who are you") ||
+                lower.includes("your name")
+            ) {
+
+                return "I'm Pazhu 🍌. Fruit analyst. Roast specialist. Unlicensed therapist.";
+
+            }
+
+            if (
+                lower.includes("hello") ||
+                lower.includes("hi") ||
+                lower.includes("hey")
+            ) {
+
+                return "Hello human. Have you brought tribute in the form of fruit?";
+
+            }
+
+            if (
+                lower.includes("love") ||
+                lower.includes("like")
+            ) {
+
+                return "I don't do romance. I do fruit compatibility. Much more scientifically unnecessary.";
+
+            }
+
+            return "Interesting question. Unfortunately I am a banana with Wi-Fi and questionable qualifications.";
+
+        }
 
 
-        chatBox.appendChild(
-            pazhuMessage
+        /* =========================================================
+           INITIAL STATE
+        ========================================================= */
+
+        console.log(
+            "🍌 PAZHAM.EXE ONLINE"
         );
 
-
-        chatBox.scrollTop =
-            chatBox.scrollHeight;
-
-    }, 450);
-
-}
-
-
-/* =========================================================
-   PAZHU CHAT BRAIN
-========================================================= */
-
-function getPazhuResponse(message) {
-
-    const text =
-        message
-            .toLowerCase()
-            .trim();
-
-
-    if (
-        text === "hi" ||
-        text === "hello" ||
-        text.includes("hey pazhu")
-    ) {
-
-        return "Yo 👋 Pazhu here. What's the fruit emergency?";
-
-    }
-
-
-    if (
-        text.includes("good morning")
-    ) {
-
-        return "Good morning 🌞. I woke up emotionally unavailable, but we're surviving.";
-
-    }
-
-
-    if (
-        text.includes("good night")
-    ) {
-
-        return "Good night 🌙. Even Pazhu needs to recharge its potassium.";
-
-    }
-
-
-    if (
-        text.includes("study") ||
-        text.includes("learn")
-    ) {
-
-        return "YES 😭. Go study. I'm literally a banana and somehow I'm more productive than you.";
-
-    }
-
-
-    if (
-        text.includes("recipe") ||
-        text.includes("cook")
-    ) {
-
-        return "Give me a fruit and I'll give you a recipe that should probably have required adult supervision. 🍌";
-
-    }
-
-
-    if (
-        text.includes("banana")
-    ) {
-
-        return "Banana detected. Finally, someone is speaking my language. 🍌";
-
-    }
-
-
-    if (
-        text.includes("apple")
-    ) {
-
-        return "Apple? Overachiever energy. That thing probably has a five-year plan.";
-
-    }
-
-
-    if (
-        text.includes("mango")
-    ) {
-
-        return "Mangoes don't enter rooms. They make an entrance. 👑";
-
-    }
-
-
-    if (
-        text.includes("strawberry")
-    ) {
-
-        return "Tiny fruit. Massive personality. Suspicious.";
-
-    }
-
-
-    if (
-        text.includes("pineapple")
-    ) {
-
-        return "Pineapple looks like it could fight you and then asks for a hug.";
-
-    }
-
-
-    if (
-        text.includes("sad") ||
-        text.includes("happy") ||
-        text.includes("feel")
-    ) {
-
-        return "You're asking emotional questions to a banana. Honestly? I respect it. 🍌";
-
-    }
-
-
-    if (
-        text.includes("compatible") ||
-        text.includes("compatibility")
-    ) {
-
-        return "Running compatibility.exe... suspiciously promising. 87%. 🍌💻";
-
-    }
-
-
-    if (
-        text.includes("love") ||
-        text.includes("like me")
-    ) {
-
-        return "Pazhu's legal team recommends asking a human. I'm just a banana. 😭";
-
-    }
-
-
-    if (
-        text.includes("fruit")
-    ) {
-
-        return "Finally. My area of expertise. What fruit are we investigating?";
-
-    }
-
-
-    const responses = [
-
-        "Bro... that's a very human question.",
-
-        "I need to peel this question apart first. 🍌",
-
-        "Interesting. Let me consult my banana brain.",
-
-        "I have no idea, but I said it confidently.",
-
-        "That's above my potassium level.",
-
-        "Why are you asking a banana? ...Actually, continue.",
-
-        "Processing... 🍌💻",
-
-        "I wasn't programmed for this level of nonsense."
-
-    ];
-
-
-    return responses[
-        Math.floor(
-            Math.random() *
-            responses.length
-        )
-    ];
-
-}
-
-
-/* =========================================================
-   INITIAL STATE
-========================================================= */
-
-console.log(
-    "🍌 PAZHAM.EXE ONLINE"
-);
-
-console.log(
-    "🧠 Pazhu Vision System ready"
-);
-
-</script>
+        console.log(
+            "NINAK VAYYE? scanner initialized."
+        );
+
+    </script>
 
 </body>
 </html>
-```
