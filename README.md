@@ -84,9 +84,8 @@ For Hardware:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
+[Recording 2026-09-04 033151.mp4
+]
 # Additional Demos
 [Add any extra demo materials/links]
 
