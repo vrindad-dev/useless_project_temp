@@ -49,8 +49,9 @@ For Software:
 <img width="1912" height="961" alt="Screenshot 2026-09-04 030355" src="https://github.com/user-attachments/assets/1b824738-d781-4d44-91f6-d2774f7fea12" />
 
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+** Features of Ninak Vayye<img width="1891" height="911" alt="Screenshot 2026-09-04 030436" src="https://github.com/user-attachments/assets/ba5dfa4f-099d-48a4-b43f-747e9b4ef5ae" />
+)
+*
 
 ![Screenshot3](Add screenshot 3 here with proper name)
 *Add caption explaining what this shows*
