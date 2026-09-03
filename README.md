@@ -63,13 +63,11 @@ For Software:
 # Video
 ## 🎥 Demo
 
-[▶️ Watch Ninak Vayye Demo](./Recording2026-09-04%20033251.mp4)
+[▶️ Watch Ninak Vayye Demo](https://github.com/vrindad-dev/useless_project_temp/blob/main/Recording%202026-09-04%20033151.mp4)
 
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+Vrindalekshmi D : Project lead and developer
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
