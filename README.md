@@ -45,7 +45,7 @@ http://localhost:3000
 ### Project Documentation
 For Software:
 # Screenshots 
-![** Home screen of Ninak Vayye **].
+** Home screen of Ninak Vayye **
 <img width="1912" height="961" alt="Screenshot 2026-09-04 030355" src="https://github.com/user-attachments/assets/1b824738-d781-4d44-91f6-d2774f7fea12" />
 
 
