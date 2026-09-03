@@ -40,7 +40,7 @@ git clone https://github.com/vrindad-dev/useless_project_temp.git
 cd useless_project_temp
 
 # Run
-Open index.html in a browser
+http://localhost:3000
 
 ### Project Documentation
 For Software:
