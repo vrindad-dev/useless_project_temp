@@ -46,7 +46,7 @@ http://localhost:3000
 For Software:
 # Screenshots 
 ![** Home screen of Ninak Vayye **].
-.(Screenshot 2026-09-04 030355.png).
+<img width="1912" height="961" alt="Screenshot 2026-09-04 030355" src="https://github.com/user-attachments/assets/1b824738-d781-4d44-91f6-d2774f7fea12" />
 
 
 ![Screenshot2](Add screenshot 2 here with proper name)
