@@ -49,12 +49,15 @@ For Software:
 <img width="1912" height="961" alt="Screenshot 2026-09-04 030355" src="https://github.com/user-attachments/assets/1b824738-d781-4d44-91f6-d2774f7fea12" />
 
 
-** Features of Ninak Vayye<img width="1891" height="911" alt="Screenshot 2026-09-04 030436" src="https://github.com/user-attachments/assets/ba5dfa4f-099d-48a4-b43f-747e9b4ef5ae" />
+** Features of Ninak Vayye **<img width="1891" height="911" alt="Screenshot 2026-09-04 030436" src="https://github.com/user-attachments/assets/ba5dfa4f-099d-48a4-b43f-747e9b4ef5ae" />
 )
-*
 
-** Feature of Ninak Vayye(<img width="1917" height="852" alt="Screenshot 2026-09-04 030514" src="https://github.com/user-attachments/assets/816e944e-91ea-4c25-bdb1-94b9bd51f153" />
+
+(<img width="1917" height="852" alt="Screenshot 2026-09-04 030514" src="https://github.com/user-attachments/assets/816e944e-91ea-4c25-bdb1-94b9bd51f153" />
 )
+
+(<img width="1622" height="797" alt="Screenshot 2026-09-04 030611" src="https://github.com/user-attachments/assets/368f34d7-ab40-44a4-803d-2c4817865eda" />
+
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
