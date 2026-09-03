@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NINAK VAYYE? — Pazham.exe</title>
+
+    <title>NINAK VAYYE? — Pazhu.exe</title>
 
     <!-- TensorFlow + MobileNet -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -19,22 +21,29 @@
         :root {
             --bg: #070707;
             --card: #111111;
-            --card2: #171717;
-            --text: #f5f5f5;
-            --muted: #898989;
-            --line: #2a2a2a;
+            --line: #292929;
+            --text: #f4f4f4;
+            --muted: #858585;
             --lime: #c8ff00;
             --pink: #ff4fd8;
-            --cyan: #00e5ff;
             --orange: #ff8a00;
             --red: #ff4264;
         }
 
         body {
             background:
-                radial-gradient(circle at 15% 10%, rgba(200,255,0,.07), transparent 25%),
-                radial-gradient(circle at 85% 20%, rgba(255,79,216,.06), transparent 25%),
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(200,255,0,.07),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(255,79,216,.06),
+                    transparent 25%
+                ),
                 var(--bg);
+
             color: var(--text);
             font-family: Arial, Helvetica, sans-serif;
             min-height: 100vh;
@@ -54,28 +63,33 @@
             margin: auto;
         }
 
-        /* NAV */
+        /* =========================
+           NAV
+        ========================= */
 
         nav {
             position: sticky;
             top: 0;
-            z-index: 20;
+            z-index: 50;
+
             border-bottom: 1px solid var(--line);
+
             background: rgba(7,7,7,.88);
             backdrop-filter: blur(15px);
         }
 
         .nav-inner {
-            height: 72px;
+            height: 70px;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .logo {
+            font-size: 21px;
             font-weight: 1000;
             letter-spacing: -1px;
-            font-size: 21px;
         }
 
         .logo span {
@@ -84,44 +98,53 @@
 
         .nav-links {
             display: flex;
-            gap: 8px;
+            gap: 7px;
         }
 
         .nav-btn {
+            background: #0e0e0e;
+            color: white;
+
             border: 1px solid var(--line);
-            background: #0d0d0d;
-            color: var(--text);
+            border-radius: 7px;
+
             padding: 9px 14px;
-            border-radius: 8px;
-            font-weight: 800;
-            font-size: 12px;
+
+            font-size: 11px;
+            font-weight: 900;
         }
 
         .nav-btn.active,
         .nav-btn:hover {
-            border-color: var(--lime);
             color: var(--lime);
+            border-color: var(--lime);
         }
 
         .online {
             display: flex;
             align-items: center;
             gap: 7px;
+
             color: var(--lime);
-            font-size: 10px;
+
+            font-size: 9px;
             font-weight: 900;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
         .online-dot {
             width: 7px;
             height: 7px;
+
             border-radius: 50%;
             background: var(--lime);
+
             box-shadow: 0 0 12px var(--lime);
         }
 
-        /* HERO */
+        /* =========================
+           HERO
+        ========================= */
 
         .hero {
             padding: 80px 0 55px;
@@ -129,18 +152,20 @@
 
         .eyebrow {
             color: var(--lime);
-            font-size: 11px;
+
+            font-size: 10px;
             font-weight: 900;
             letter-spacing: 3px;
+
             margin-bottom: 15px;
         }
 
         .hero h1 {
-            font-size: clamp(52px, 10vw, 110px);
+            font-size: clamp(55px, 10vw, 110px);
             line-height: .82;
+
             letter-spacing: -7px;
             font-weight: 1000;
-            max-width: 900px;
         }
 
         .hero h1 span {
@@ -148,27 +173,37 @@
         }
 
         .hero p {
+            max-width: 650px;
+
             margin-top: 25px;
-            max-width: 620px;
+
             color: #aaa;
-            font-size: 16px;
-            line-height: 1.6;
+
+            font-size: 15px;
+            line-height: 1.65;
         }
 
-        /* TECH STRIP */
+        /* =========================
+           TECH PIPELINE
+        ========================= */
 
         .tech-strip {
-            border: 1px solid var(--line);
-            background: #0d0d0d;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            margin-bottom: 35px;
+            grid-template-columns: repeat(4,1fr);
+
+            border: 1px solid var(--line);
+
+            background: #0d0d0d;
+
+            margin-bottom: 40px;
         }
 
         .tech-step {
             padding: 17px;
-            border-right: 1px solid var(--line);
+
             text-align: center;
+
+            border-right: 1px solid var(--line);
         }
 
         .tech-step:last-child {
@@ -176,18 +211,23 @@
         }
 
         .tech-step small {
-            color: var(--muted);
             display: block;
-            font-size: 9px;
+
+            color: #666;
+
+            font-size: 8px;
             letter-spacing: 1.5px;
-            margin-bottom: 5px;
+
+            margin-bottom: 6px;
         }
 
         .tech-step strong {
-            font-size: 12px;
+            font-size: 11px;
         }
 
-        /* SECTIONS */
+        /* =========================
+           SECTION
+        ========================= */
 
         .section {
             margin-bottom: 55px;
@@ -197,99 +237,115 @@
             display: flex;
             justify-content: space-between;
             align-items: end;
-            margin-bottom: 16px;
+
+            margin-bottom: 15px;
         }
 
         .section-title h2 {
-            font-size: 25px;
+            font-size: 24px;
             letter-spacing: -1px;
         }
 
         .section-title span {
-            color: var(--muted);
-            font-size: 10px;
-            font-weight: 800;
+            color: #666;
+
+            font-size: 9px;
+            font-weight: 900;
             letter-spacing: 1px;
         }
 
-        /* SCANNER */
+        /* =========================
+           SCANNER
+        ========================= */
 
         .scanner-card {
-            border: 1px solid var(--line);
-            background: var(--card);
             padding: 20px;
+
+            background: var(--card);
+            border: 1px solid var(--line);
         }
 
         .drop-zone {
             min-height: 300px;
-            border: 1px dashed #444;
-            background:
-                linear-gradient(135deg, rgba(255,255,255,.02), transparent),
-                #0c0c0c;
+
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+
             text-align: center;
+
             padding: 30px;
+
+            border: 1px dashed #444;
+
+            background: #0c0c0c;
+
             transition: .2s;
         }
 
         .drop-zone.dragover {
             border-color: var(--lime);
-            background: rgba(200,255,0,.04);
+
+            background:
+                rgba(200,255,0,.04);
         }
 
         .upload-content {
-            max-width: 430px;
+            max-width: 450px;
         }
 
         .upload-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
+            font-size: 52px;
+
+            margin-bottom: 14px;
         }
 
         .upload-content h3 {
-            font-size: 24px;
+            font-size: 23px;
+
             margin-bottom: 8px;
         }
 
         .upload-content p {
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.5;
+            color: #777;
+
+            font-size: 12px;
+            line-height: 1.6;
+
             margin-bottom: 20px;
         }
 
         .button-row {
             display: flex;
             justify-content: center;
+
             flex-wrap: wrap;
+
             gap: 9px;
         }
 
         .primary-btn,
         .secondary-btn {
-            border: none;
             padding: 13px 18px;
+
             border-radius: 7px;
+
+            font-size: 11px;
             font-weight: 1000;
-            font-size: 12px;
         }
 
         .primary-btn {
+            border: none;
+
             background: var(--lime);
             color: #050505;
         }
 
-        .primary-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 0 20px rgba(200,255,0,.18);
-        }
-
         .secondary-btn {
-            background: #1d1d1d;
-            color: white;
             border: 1px solid #333;
+
+            background: #1b1b1b;
+            color: white;
         }
 
         .secondary-btn:hover {
@@ -302,10 +358,13 @@
             display: none;
         }
 
-        /* PREVIEW */
+        /* =========================
+           PREVIEW
+        ========================= */
 
         .preview-area {
             display: none;
+
             margin-top: 15px;
         }
 
@@ -315,49 +374,66 @@
 
         .preview-wrapper {
             position: relative;
+
             overflow: hidden;
-            border: 1px solid var(--line);
+
             background: #000;
+
+            border: 1px solid var(--line);
         }
 
         #previewImage {
-            display: block;
             width: 100%;
             max-height: 480px;
+
+            display: block;
+
             object-fit: contain;
         }
 
         .remove-btn {
             position: absolute;
+
             top: 12px;
             right: 12px;
-            border: 1px solid #555;
-            background: rgba(0,0,0,.85);
-            color: white;
+
             padding: 8px 11px;
+
+            background: rgba(0,0,0,.85);
+
+            color: white;
+
+            border: 1px solid #555;
             border-radius: 6px;
-            font-size: 11px;
+
+            font-size: 9px;
             font-weight: 900;
         }
 
         .analyze-row {
-            margin-top: 15px;
             display: flex;
-            gap: 10px;
+
+            margin-top: 15px;
         }
 
         .analyze-row button {
-            flex: 1;
+            width: 100%;
         }
 
-        /* STATUS */
+        /* =========================
+           STATUS
+        ========================= */
 
         .status-box {
             display: none;
+
             margin-top: 15px;
-            border: 1px solid var(--line);
-            background: #0d0d0d;
+
             padding: 18px;
+
+            background: #0d0d0d;
+
+            border: 1px solid var(--line);
         }
 
         .status-box.show {
@@ -367,42 +443,56 @@
         .status-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 13px;
+
+            margin-bottom: 12px;
         }
 
         .status-header strong {
-            font-size: 12px;
+            font-size: 11px;
         }
 
         #statusText {
             color: var(--lime);
-            font-size: 11px;
+
+            font-size: 9px;
             font-weight: 900;
         }
 
         .progress {
             height: 4px;
+
             background: #222;
+
             overflow: hidden;
         }
 
         .progress-bar {
             width: 0%;
             height: 100%;
+
             background: var(--lime);
+
             transition: width .4s ease;
         }
 
-        /* ERROR */
+        /* =========================
+           ERROR
+        ========================= */
 
         .error-box {
             display: none;
+
             margin-top: 15px;
+
             padding: 14px;
-            border: 1px solid var(--red);
-            background: rgba(255,66,100,.07);
+
             color: #ff8ca0;
-            font-size: 12px;
+
+            background: rgba(255,66,100,.07);
+
+            border: 1px solid var(--red);
+
+            font-size: 11px;
             line-height: 1.5;
         }
 
@@ -410,7 +500,9 @@
             display: block;
         }
 
-        /* RESULTS */
+        /* =========================
+           RESULTS
+        ========================= */
 
         #results {
             display: none;
@@ -422,14 +514,18 @@
 
         .result-grid {
             display: grid;
+
             grid-template-columns: 1.1fr .9fr;
+
             gap: 15px;
         }
 
         .result-card {
-            border: 1px solid var(--line);
-            background: var(--card);
             padding: 22px;
+
+            background: var(--card);
+
+            border: 1px solid var(--line);
         }
 
         .result-card.full {
@@ -437,98 +533,115 @@
         }
 
         .result-label {
-            color: var(--muted);
-            font-size: 9px;
-            letter-spacing: 2px;
+            color: #666;
+
+            font-size: 8px;
             font-weight: 900;
+            letter-spacing: 2px;
+
             margin-bottom: 10px;
         }
 
         .fruit-name {
             font-size: clamp(36px, 6vw, 62px);
+
             line-height: .9;
+
             font-weight: 1000;
+
             letter-spacing: -3px;
         }
 
         .fruit-subtitle {
             color: var(--pink);
+
             margin-top: 10px;
-            font-size: 12px;
+
+            font-size: 10px;
             font-weight: 900;
         }
 
         .confidence {
             display: inline-block;
+
             margin-top: 15px;
+
             padding: 7px 9px;
-            border: 1px solid #333;
-            font-size: 9px;
-            font-weight: 900;
+
             color: var(--lime);
+
+            border: 1px solid #333;
+
+            font-size: 8px;
+            font-weight: 900;
         }
 
         .personality {
             font-size: 24px;
+
             font-weight: 1000;
+
             margin-bottom: 8px;
         }
 
         .description {
             color: #aaa;
-            line-height: 1.6;
-            font-size: 13px;
+
+            font-size: 12px;
+            line-height: 1.65;
         }
 
-        /* EVIDENCE */
+        /* =========================
+           EVIDENCE
+        ========================= */
 
         .evidence-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+
+            grid-template-columns: repeat(4,1fr);
+
             gap: 8px;
         }
 
         .evidence {
-            background: #0c0c0c;
-            border: 1px solid #252525;
             padding: 14px;
+
+            background: #0c0c0c;
+
+            border: 1px solid #252525;
         }
 
         .evidence small {
             display: block;
-            color: #777;
-            font-size: 8px;
+
+            color: #666;
+
+            font-size: 7px;
             letter-spacing: 1.5px;
+
             margin-bottom: 7px;
         }
 
         .evidence strong {
-            font-size: 13px;
+            font-size: 12px;
         }
 
-        /* COMPATIBILITY */
+        /* =========================
+           COMPATIBILITY
+        ========================= */
 
         .compat-card {
             position: relative;
             overflow: hidden;
         }
 
-        .compat-card::after {
-            content: "VIBE CHECK";
-            position: absolute;
-            right: -25px;
-            top: 25px;
-            transform: rotate(90deg);
-            color: #222;
-            font-size: 9px;
-            font-weight: 1000;
-            letter-spacing: 3px;
-        }
-
         .compat-number {
-            font-size: 76px;
+            font-size: 75px;
+
             line-height: .85;
+
             font-weight: 1000;
+
             letter-spacing: -5px;
         }
 
@@ -537,98 +650,163 @@
         }
 
         .compat-bar {
-            margin-top: 18px;
             height: 9px;
+
+            margin-top: 18px;
+
             background: #242424;
         }
 
         .compat-fill {
-            height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--pink), var(--lime));
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--pink),
+                    var(--lime)
+                );
+
             transition: width 1s ease;
         }
 
         .percentile {
             margin-top: 10px;
-            color: var(--muted);
-            font-size: 9px;
+
+            color: #666;
+
+            font-size: 8px;
             font-weight: 900;
             letter-spacing: 1px;
         }
 
-        /* PAZHU */
+        /* =========================
+           PAZHU
+        ========================= */
 
         .pazhu-box {
             border-color: rgba(200,255,0,.25);
+
             background:
-                radial-gradient(circle at 90% 10%, rgba(200,255,0,.08), transparent 35%),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(200,255,0,.08),
+                    transparent 35%
+                ),
                 var(--card);
         }
 
         .pazhu-head {
             display: flex;
-            gap: 13px;
+
             align-items: center;
+
+            gap: 13px;
+
             margin-bottom: 14px;
         }
 
         .pazhu-avatar {
             width: 48px;
             height: 48px;
+
             display: grid;
             place-items: center;
+
+            background: #090909;
+
             border: 1px solid var(--lime);
-            background: #0a0a0a;
+
             font-size: 27px;
         }
 
         .pazhu-head strong {
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .pazhu-head small {
             display: block;
+
             color: var(--lime);
-            font-size: 8px;
+
             margin-top: 3px;
+
+            font-size: 7px;
             letter-spacing: 1px;
         }
 
         .pazhu-message {
-            font-size: 17px;
+            font-size: 16px;
+
             line-height: 1.5;
+
             font-weight: 800;
         }
 
-        /* RECIPE */
+        /* =========================
+           WEIRD RECIPE
+        ========================= */
+
+        .recipe-card {
+            position: relative;
+
+            overflow: hidden;
+
+            border-color: rgba(255,138,0,.3);
+        }
+
+        .recipe-card::before {
+            content: "⚠";
+
+            position: absolute;
+
+            top: 12px;
+            right: 20px;
+
+            font-size: 60px;
+
+            opacity: .06;
+        }
 
         .recipe-name {
             color: var(--orange);
-            font-size: 28px;
+
+            font-size: 27px;
+
             font-weight: 1000;
-            margin-bottom: 8px;
+
+            margin-bottom: 9px;
         }
 
         .recipe-description {
+            max-width: 850px;
+
             color: #aaa;
-            line-height: 1.6;
-            font-size: 13px;
+
+            font-size: 12px;
+            line-height: 1.65;
         }
 
-        /* SCAN AGAIN */
+        .recipe-tag {
+            display: inline-block;
 
-        .again-row {
             margin-top: 15px;
-            display: flex;
-            gap: 10px;
+
+            padding: 6px 9px;
+
+            color: var(--orange);
+
+            border: 1px solid #393939;
+
+            font-size: 7px;
+            font-weight: 900;
+            letter-spacing: 1px;
         }
 
-        .again-row button {
-            width: 100%;
-        }
-
-        /* CHAT */
+        /* =========================
+           CHAT
+        ========================= */
 
         #chatSection {
             display: none;
@@ -639,20 +817,24 @@
         }
 
         .chat-card {
-            border: 1px solid var(--line);
             background: var(--card);
+
+            border: 1px solid var(--line);
         }
 
         .chat-messages {
             min-height: 280px;
             max-height: 420px;
+
             overflow-y: auto;
+
             padding: 18px;
         }
 
         .message {
-            margin-bottom: 14px;
             display: flex;
+
+            margin-bottom: 14px;
         }
 
         .message.user {
@@ -661,59 +843,82 @@
 
         .bubble {
             max-width: 75%;
+
             padding: 11px 14px;
+
             border-radius: 8px;
-            font-size: 12px;
+
+            font-size: 11px;
             line-height: 1.5;
         }
 
         .message.pazhu .bubble {
             background: #1b1b1b;
+
             border: 1px solid #303030;
         }
 
         .message.user .bubble {
             background: var(--lime);
+
             color: #050505;
+
             font-weight: 800;
         }
 
         .chat-input-row {
             display: flex;
+
             border-top: 1px solid var(--line);
         }
 
         #chatInput {
             flex: 1;
-            border: none;
+
+            padding: 16px;
+
             outline: none;
+            border: none;
+
             background: #0d0d0d;
             color: white;
-            padding: 16px;
         }
 
         #sendChat {
             width: 100px;
+
             border: none;
+
             background: var(--lime);
+
             font-weight: 1000;
         }
 
-        /* FOOTER */
+        /* =========================
+           FOOTER
+        ========================= */
 
         footer {
-            border-top: 1px solid var(--line);
             margin-top: 80px;
+
             padding: 30px 0;
-            color: #666;
-            font-size: 10px;
+
             text-align: center;
+
+            color: #555;
+
+            border-top: 1px solid var(--line);
+
+            font-size: 9px;
             letter-spacing: 1px;
         }
 
-        /* MOBILE */
+        /* =========================
+           MOBILE
+        ========================= */
 
-        @media (max-width: 700px) {
+        @media (max-width:700px) {
+
             .nav-inner {
                 height: 62px;
             }
@@ -731,7 +936,7 @@
             }
 
             .tech-strip {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2,1fr);
             }
 
             .tech-step:nth-child(2) {
@@ -751,725 +956,1043 @@
             }
 
             .evidence-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .analyze-row {
-                flex-direction: column;
+                grid-template-columns: repeat(2,1fr);
             }
 
             .fruit-name {
-                font-size: 48px;
+                font-size: 47px;
             }
 
             .compat-number {
                 font-size: 65px;
             }
+
         }
+
     </style>
 </head>
 
 <body>
 
-    <!-- NAV -->
-    <nav>
-        <div class="container nav-inner">
-            <div class="logo">PAZHAM<span>.EXE</span></div>
 
-            <div class="nav-links">
-                <button class="nav-btn active" id="scanNav">SCAN</button>
-                <button class="nav-btn" id="chatNav">CHAT</button>
-            </div>
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
 
-            <div class="online">
-                <span class="online-dot"></span>
-                PAZHU ONLINE
-            </div>
-        </div>
-    </nav>
+<nav>
 
-    <main class="container">
+    <div class="container nav-inner">
 
-        <!-- HERO -->
-        <section class="hero">
-            <div class="eyebrow">FRUIT INTELLIGENCE // 001</div>
-
-            <h1>
-                NINAK<br>
-                <span>VAYYE?</span>
-            </h1>
-
-            <p>
-                Upload a fruit. Let Pazhu judge its looks, ripeness,
-                condition, mood, personality and your completely unnecessary
-                emotional compatibility.
-            </p>
-        </section>
-
-        <!-- TECH PIPELINE -->
-        <div class="tech-strip">
-            <div class="tech-step">
-                <small>01 / INPUT</small>
-                <strong>FRUIT IMAGE</strong>
-            </div>
-
-            <div class="tech-step">
-                <small>02 / VISION</small>
-                <strong>MOBILENET</strong>
-            </div>
-
-            <div class="tech-step">
-                <small>03 / SIGNALS</small>
-                <strong>COLOUR + TEXTURE</strong>
-            </div>
-
-            <div class="tech-step">
-                <small>04 / VERDICT</small>
-                <strong>PAZHU.EXE</strong>
-            </div>
+        <div class="logo">
+            PAZHAM<span>.EXE</span>
         </div>
 
-        <!-- SCANNER -->
-        <section class="section" id="scannerSection">
+        <div class="nav-links">
 
-            <div class="section-title">
-                <h2>01 / SCANNER</h2>
-                <span>NO FRUIT IS SAFE</span>
-            </div>
+            <button
+                class="nav-btn active"
+                id="scanNav"
+            >
+                SCAN
+            </button>
 
-            <div class="scanner-card">
+            <button
+                class="nav-btn"
+                id="chatNav"
+            >
+                CHAT
+            </button>
 
-                <div class="drop-zone" id="dropZone">
+        </div>
 
-                    <div class="upload-content">
+        <div class="online">
 
-                        <div class="upload-icon">🍌</div>
+            <span class="online-dot"></span>
 
-                        <h3>Show me the fruit.</h3>
+            PAZHU ONLINE
 
-                        <p>
-                            Drop an image here or choose one from your device.
-                            Pazhu will perform completely unnecessary fruit analysis.
-                        </p>
+        </div>
 
-                        <div class="button-row">
+    </div>
 
-                            <button class="primary-btn" id="chooseBtn">
-                                UPLOAD FRUIT
-                            </button>
+</nav>
 
-                            <button class="secondary-btn" id="cameraBtn">
-                                📷 USE CAMERA
-                            </button>
 
-                        </div>
+<main class="container">
 
-                        <input
-                            type="file"
-                            id="fileInput"
-                            accept="image/*"
-                        >
 
-                        <input
-                            type="file"
-                            id="cameraInput"
-                            accept="image/*"
-                            capture="environment"
-                        >
+<!-- =========================================================
+     HERO
+========================================================= -->
 
-                    </div>
+<section class="hero">
 
-                </div>
+    <div class="eyebrow">
+        FRUIT INTELLIGENCE // 001
+    </div>
 
-                <!-- PREVIEW -->
+    <h1>
+        NINAK<br>
+        <span>VAYYE?</span>
+    </h1>
 
-                <div class="preview-area" id="previewArea">
+    <p>
+        Give Pazhu a fruit. He will inspect its appearance,
+        estimate ripeness, judge its condition, assign a mood,
+        calculate your completely unnecessary compatibility,
+        roast it and invent a questionable recipe.
+    </p>
 
-                    <div class="preview-wrapper">
+</section>
 
-                        <img
-                            id="previewImage"
-                            alt="Selected fruit"
-                        >
 
-                        <button
-                            class="remove-btn"
-                            id="removeBtn"
-                        >
-                            REMOVE
-                        </button>
+<!-- =========================================================
+     TECH PIPELINE
+========================================================= -->
 
-                    </div>
+<div class="tech-strip">
 
-                    <div class="analyze-row">
+    <div class="tech-step">
 
-                        <button
-                            class="primary-btn"
-                            id="analyzeBtn"
-                        >
-                            ANALYZE THIS FRUIT →
-                        </button>
+        <small>01 / INPUT</small>
 
-                    </div>
+        <strong>
+            FRUIT IMAGE
+        </strong>
 
-                </div>
+    </div>
 
-                <!-- STATUS -->
+    <div class="tech-step">
 
-                <div class="status-box" id="statusBox">
+        <small>02 / VISION</small>
 
-                    <div class="status-header">
-                        <strong>PAZHU IS THINKING...</strong>
-                        <span id="statusText">INITIALISING</span>
-                    </div>
+        <strong>
+            MOBILENET
+        </strong>
 
-                    <div class="progress">
-                        <div
-                            class="progress-bar"
-                            id="progressBar"
-                        ></div>
-                    </div>
+    </div>
 
-                </div>
-
-                <!-- ERROR -->
-
-                <div
-                    class="error-box"
-                    id="errorBox"
-                ></div>
+    <div class="tech-step">
 
-            </div>
-        </section>
+        <small>03 / SIGNALS</small>
 
-        <!-- RESULTS -->
-        <section class="section" id="results">
+        <strong>
+            COLOUR + PIXELS
+        </strong>
 
-            <div class="section-title">
-                <h2>02 / VERDICT</h2>
-                <span id="resultStatus">ANALYSIS COMPLETE</span>
-            </div>
+    </div>
 
-            <div class="result-grid">
+    <div class="tech-step">
 
-                <!-- FRUIT -->
-                <div class="result-card">
-
-                    <div class="result-label">
-                        IDENTIFIED SPECIES
-                    </div>
-
-                    <div
-                        class="fruit-name"
-                        id="fruitName"
-                    >
-                        UNKNOWN
-                    </div>
+        <small>04 / VERDICT</small>
 
-                    <div
-                        class="fruit-subtitle"
-                        id="fruitSubtitle"
-                    >
-                        THE FRUIT HAS ENTERED THE CHAT.
-                    </div>
+        <strong>
+            PAZHU.EXE
+        </strong>
 
-                    <div
-                        class="confidence"
-                        id="confidence"
-                    >
-                        CONFIDENCE: --
-                    </div>
+    </div>
 
-                </div>
+</div>
 
-                <!-- PERSONALITY -->
-                <div class="result-card">
 
-                    <div class="result-label">
-                        FRUIT PERSONALITY
-                    </div>
+<!-- =========================================================
+     SCANNER
+========================================================= -->
 
-                    <div
-                        class="personality"
-                        id="personality"
-                    >
-                        --
-                    </div>
+<section
+    class="section"
+    id="scannerSection"
+>
 
-                    <div
-                        class="description"
-                        id="personalityDescription"
-                    >
-                        Pazhu is still judging.
-                    </div>
-
-                </div>
+    <div class="section-title">
 
-                <!-- VISUAL EVIDENCE -->
-                <div class="result-card full">
+        <h2>
+            01 / SCANNER
+        </h2>
 
-                    <div class="result-label">
-                        VISUAL EVIDENCE
-                    </div>
+        <span>
+            NO FRUIT IS SAFE
+        </span>
 
-                    <div class="evidence-grid">
+    </div>
 
-                        <div class="evidence">
-                            <small>COLOUR</small>
-                            <strong id="color">--</strong>
-                        </div>
-
-                        <div class="evidence">
-                            <small>RIPENESS</small>
-                            <strong id="ripeness">--</strong>
-                        </div>
-
-                        <div class="evidence">
-                            <small>CONDITION</small>
-                            <strong id="condition">--</strong>
-                        </div>
-
-                        <div class="evidence">
-                            <small>MOOD</small>
-                            <strong id="mood">--</strong>
-                        </div>
 
-                    </div>
+    <div class="scanner-card">
 
-                </div>
 
-                <!-- COMPATIBILITY -->
-                <div class="result-card compat-card">
-
-                    <div class="result-label">
-                        EMOTIONAL COMPATIBILITY
-                    </div>
-
-                    <div class="compat-number">
-                        <span id="compatibilityScore">--</span>%
-                    </div>
-
-                    <div class="compat-bar">
-                        <div
-                            class="compat-fill"
-                            id="compatibilityBar"
-                        ></div>
-                    </div>
-
-                    <div
-                        class="percentile"
-                        id="compatibilityPercentile"
-                    >
-                        CALCULATING VIBE...
-                    </div>
-
-                </div>
-
-                <!-- PAZHU -->
-                <div class="result-card pazhu-box">
-
-                    <div class="pazhu-head">
-
-                        <div class="pazhu-avatar">
-                            🍌
-                        </div>
-
-                        <div>
-                            <strong>PAZHU</strong>
-                            <small>FRUIT EXPERT / PROFESSIONAL HATER</small>
-                        </div>
-
-                    </div>
-
-                    <div
-                        class="pazhu-message"
-                        id="pazhuMessage"
-                    >
-                        Upload something first. I have standards.
-                    </div>
-
-                </div>
-
-                <!-- COMPATIBILITY MESSAGE -->
-                <div class="result-card full">
-
-                    <div class="result-label">
-                        PAZHU'S VIBE REPORT
-                    </div>
-
-                    <div
-                        class="description"
-                        id="compatibilityMessage"
-                    >
-                        --
-                    </div>
-
-                </div>
-
-                <!-- RECIPE -->
-                <div class="result-card full">
-
-                    <div class="result-label">
-                        COMPLETELY QUESTIONABLE RECIPE
-                    </div>
-
-                    <div
-                        class="recipe-name"
-                        id="recipeName"
-                    >
-                        --
-                    </div>
-
-                    <div
-                        class="recipe-description"
-                        id="recipeDescription"
-                    >
-                        --
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="again-row">
-
-                <button
-                    class="secondary-btn"
-                    id="scanAgainBtn"
-                >
-                    ← SCAN ANOTHER FRUIT
-                </button>
-
-            </div>
-
-        </section>
-
-        <!-- CHAT -->
-        <section
-            class="section"
-            id="chatSection"
+        <div
+            class="drop-zone"
+            id="dropZone"
         >
 
-            <div class="section-title">
-                <h2>03 / CHAT WITH PAZHU</h2>
-                <span>HE DEFINITELY KNOWS EVERYTHING</span>
-            </div>
+            <div class="upload-content">
 
-            <div class="chat-card">
-
-                <div
-                    class="chat-messages"
-                    id="chatMessages"
-                >
-
-                    <div class="message pazhu">
-
-                        <div class="bubble">
-                            Yo. I'm Pazhu 🍌<br><br>
-                            Ask me about fruits, recipes, life,
-                            or something completely unrelated.
-                            I will probably judge you anyway.
-                        </div>
-
-                    </div>
-
+                <div class="upload-icon">
+                    🍌
                 </div>
 
-                <div class="chat-input-row">
+                <h3>
+                    Show me the fruit.
+                </h3>
 
-                    <input
-                        type="text"
-                        id="chatInput"
-                        placeholder="Ask Pazhu something..."
-                        autocomplete="off"
+                <p>
+                    Upload or capture a fruit image.
+                    Pazhu will inspect the pixels before
+                    making completely unnecessary conclusions.
+                </p>
+
+
+                <div class="button-row">
+
+                    <button
+                        class="primary-btn"
+                        id="chooseBtn"
                     >
+                        UPLOAD FRUIT
+                    </button>
 
-                    <button id="sendChat">
-                        SEND
+                    <button
+                        class="secondary-btn"
+                        id="cameraBtn"
+                    >
+                        📷 USE CAMERA
                     </button>
 
                 </div>
 
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/*"
+                >
+
+                <input
+                    type="file"
+                    id="cameraInput"
+                    accept="image/*"
+                    capture="environment"
+                >
+
             </div>
 
-        </section>
-
-    </main>
-
-    <footer>
-        NINAK VAYYE? × PAZHAM.EXE
-        <br><br>
-        BUILT FOR ABSOLUTELY NECESSARY FRUIT RESEARCH.
-    </footer>
+        </div>
 
 
-    <script>
+        <!-- PREVIEW -->
 
-        /* =========================================================
-           GLOBAL STATE
-        ========================================================= */
+        <div
+            class="preview-area"
+            id="previewArea"
+        >
 
-        let selectedFile = null;
-        let model = null;
-        let currentAnalysis = null;
+            <div class="preview-wrapper">
 
+                <img
+                    id="previewImage"
+                    alt="Fruit preview"
+                >
 
-        /* =========================================================
-           ELEMENTS
-        ========================================================= */
+                <button
+                    class="remove-btn"
+                    id="removeBtn"
+                >
+                    REMOVE
+                </button>
 
-        const fileInput = document.getElementById("fileInput");
-        const cameraInput = document.getElementById("cameraInput");
-
-        const chooseBtn = document.getElementById("chooseBtn");
-        const cameraBtn = document.getElementById("cameraBtn");
-
-        const dropZone = document.getElementById("dropZone");
-
-        const previewArea = document.getElementById("previewArea");
-        const previewImage = document.getElementById("previewImage");
-        const removeBtn = document.getElementById("removeBtn");
-        const analyzeBtn = document.getElementById("analyzeBtn");
-
-        const statusBox = document.getElementById("statusBox");
-        const statusText = document.getElementById("statusText");
-        const progressBar = document.getElementById("progressBar");
-
-        const errorBox = document.getElementById("errorBox");
-
-        const results = document.getElementById("results");
-
-        const chatSection = document.getElementById("chatSection");
-
-        const scanNav = document.getElementById("scanNav");
-        const chatNav = document.getElementById("chatNav");
+            </div>
 
 
-        /* =========================================================
-           FILE SELECTION
-        ========================================================= */
+            <div class="analyze-row">
 
-        chooseBtn.addEventListener("click", () => {
-            fileInput.click();
-        });
+                <button
+                    class="primary-btn"
+                    id="analyzeBtn"
+                >
+                    ANALYZE THIS FRUIT →
+                </button>
 
-        cameraBtn.addEventListener("click", () => {
-            cameraInput.click();
-        });
+            </div>
 
-        fileInput.addEventListener("change", event => {
-            const file = event.target.files[0];
-
-            if (file) {
-                handleFile(file);
-            }
-        });
-
-        cameraInput.addEventListener("change", event => {
-            const file = event.target.files[0];
-
-            if (file) {
-                handleFile(file);
-            }
-        });
+        </div>
 
 
-        /* =========================================================
-           DRAG & DROP
-        ========================================================= */
+        <!-- STATUS -->
 
-        ["dragenter", "dragover"].forEach(eventName => {
+        <div
+            class="status-box"
+            id="statusBox"
+        >
 
-            dropZone.addEventListener(eventName, event => {
+            <div class="status-header">
 
-                event.preventDefault();
+                <strong>
+                    PAZHU IS THINKING...
+                </strong>
 
-                dropZone.classList.add("dragover");
+                <span id="statusText">
+                    INITIALISING
+                </span>
 
-            });
+            </div>
 
-        });
+            <div class="progress">
 
-        ["dragleave", "drop"].forEach(eventName => {
+                <div
+                    class="progress-bar"
+                    id="progressBar"
+                ></div>
 
-            dropZone.addEventListener(eventName, event => {
+            </div>
 
-                event.preventDefault();
+        </div>
 
-                dropZone.classList.remove("dragover");
 
-            });
+        <!-- ERROR -->
 
-        });
+        <div
+            class="error-box"
+            id="errorBox"
+        ></div>
 
-        dropZone.addEventListener("drop", event => {
+    </div>
 
-            const file = event.dataTransfer.files[0];
+</section>
 
-            if (!file) {
-                return;
-            }
 
-            if (!file.type.startsWith("image/")) {
-                showError("Please give Pazhu an actual image. He cannot scan your PDF.");
-                return;
-            }
+<!-- =========================================================
+     RESULTS
+========================================================= -->
 
+<section
+    class="section"
+    id="results"
+>
+
+    <div class="section-title">
+
+        <h2>
+            02 / VERDICT
+        </h2>
+
+        <span>
+            ANALYSIS COMPLETE
+        </span>
+
+    </div>
+
+
+    <div class="result-grid">
+
+
+        <!-- FRUIT -->
+
+        <div class="result-card">
+
+            <div class="result-label">
+                IDENTIFIED SPECIES
+            </div>
+
+            <div
+                class="fruit-name"
+                id="fruitName"
+            >
+                MYSTERY FRUIT
+            </div>
+
+            <div
+                class="fruit-subtitle"
+                id="fruitSubtitle"
+            >
+                THE FRUIT HAS ENTERED THE CHAT.
+            </div>
+
+            <div
+                class="confidence"
+                id="confidence"
+            >
+                CONFIDENCE: --
+            </div>
+
+        </div>
+
+
+        <!-- PERSONALITY -->
+
+        <div class="result-card">
+
+            <div class="result-label">
+                FRUIT PERSONALITY
+            </div>
+
+            <div
+                class="personality"
+                id="personality"
+            >
+                QUESTIONABLE ENERGY
+            </div>
+
+            <div
+                class="description"
+                id="personalityDescription"
+            >
+                Pazhu is still judging.
+            </div>
+
+        </div>
+
+
+        <!-- VISUAL EVIDENCE -->
+
+        <div class="result-card full">
+
+            <div class="result-label">
+                VISUAL EVIDENCE
+            </div>
+
+            <div class="evidence-grid">
+
+                <div class="evidence">
+
+                    <small>
+                        COLOUR
+                    </small>
+
+                    <strong id="color">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="evidence">
+
+                    <small>
+                        RIPENESS
+                    </small>
+
+                    <strong id="ripeness">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="evidence">
+
+                    <small>
+                        CONDITION
+                    </small>
+
+                    <strong id="condition">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="evidence">
+
+                    <small>
+                        MOOD
+                    </small>
+
+                    <strong id="mood">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMPATIBILITY -->
+
+        <div class="result-card compat-card">
+
+            <div class="result-label">
+                EMOTIONAL COMPATIBILITY
+            </div>
+
+            <div class="compat-number">
+
+                <span id="compatibilityScore">
+                    --
+                </span>%
+
+            </div>
+
+
+            <div class="compat-bar">
+
+                <div
+                    class="compat-fill"
+                    id="compatibilityBar"
+                ></div>
+
+            </div>
+
+
+            <div
+                class="percentile"
+                id="compatibilityPercentile"
+            >
+                CALCULATING VIBE...
+            </div>
+
+        </div>
+
+
+        <!-- PAZHU -->
+
+        <div class="result-card pazhu-box">
+
+            <div class="pazhu-head">
+
+                <div class="pazhu-avatar">
+                    🍌
+                </div>
+
+                <div>
+
+                    <strong>
+                        PAZHU
+                    </strong>
+
+                    <small>
+                        FRUIT EXPERT / PROFESSIONAL HATER
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="pazhu-message"
+                id="pazhuMessage"
+            >
+                Upload something first.
+                I have standards.
+            </div>
+
+        </div>
+
+
+        <!-- COMPATIBILITY MESSAGE -->
+
+        <div class="result-card full">
+
+            <div class="result-label">
+                PAZHU'S VIBE REPORT
+            </div>
+
+            <div
+                class="description"
+                id="compatibilityMessage"
+            >
+                --
+            </div>
+
+        </div>
+
+
+        <!-- WEIRD RECIPE -->
+
+        <div class="result-card full recipe-card">
+
+            <div class="result-label">
+                COMPLETELY QUESTIONABLE RECIPE
+            </div>
+
+            <div
+                class="recipe-name"
+                id="recipeName"
+            >
+                --
+            </div>
+
+            <div
+                class="recipe-description"
+                id="recipeDescription"
+            >
+                --
+            </div>
+
+            <div class="recipe-tag">
+                PAZHU CERTIFIED ★ PROBABLY EDIBLE
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="again-row">
+
+        <button
+            class="secondary-btn"
+            id="scanAgainBtn"
+        >
+            ← SCAN ANOTHER FRUIT
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CHAT
+========================================================= -->
+
+<section
+    class="section"
+    id="chatSection"
+>
+
+    <div class="section-title">
+
+        <h2>
+            03 / CHAT WITH PAZHU
+        </h2>
+
+        <span>
+            HE DEFINITELY KNOWS EVERYTHING
+        </span>
+
+    </div>
+
+
+    <div class="chat-card">
+
+        <div
+            class="chat-messages"
+            id="chatMessages"
+        >
+
+            <div class="message pazhu">
+
+                <div class="bubble">
+
+                    Yo. I'm Pazhu 🍌<br><br>
+
+                    Ask me about fruits, recipes,
+                    life or literally anything else.
+
+                    I will probably judge you.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="chat-input-row">
+
+            <input
+                type="text"
+                id="chatInput"
+                placeholder="Ask Pazhu something..."
+                autocomplete="off"
+            >
+
+            <button id="sendChat">
+                SEND
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    NINAK VAYYE? × PAZHAM.EXE
+
+    <br><br>
+
+    BUILT FOR ABSOLUTELY NECESSARY FRUIT RESEARCH.
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let selectedFile = null;
+let model = null;
+let currentAnalysis = null;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const fileInput =
+    document.getElementById("fileInput");
+
+const cameraInput =
+    document.getElementById("cameraInput");
+
+const chooseBtn =
+    document.getElementById("chooseBtn");
+
+const cameraBtn =
+    document.getElementById("cameraBtn");
+
+const dropZone =
+    document.getElementById("dropZone");
+
+const previewArea =
+    document.getElementById("previewArea");
+
+const previewImage =
+    document.getElementById("previewImage");
+
+const removeBtn =
+    document.getElementById("removeBtn");
+
+const analyzeBtn =
+    document.getElementById("analyzeBtn");
+
+const statusBox =
+    document.getElementById("statusBox");
+
+const statusText =
+    document.getElementById("statusText");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const errorBox =
+    document.getElementById("errorBox");
+
+const results =
+    document.getElementById("results");
+
+const chatSection =
+    document.getElementById("chatSection");
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+chooseBtn.addEventListener(
+    "click",
+    () => fileInput.click()
+);
+
+
+cameraBtn.addEventListener(
+    "click",
+    () => cameraInput.click()
+);
+
+
+fileInput.addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files[0];
+
+        if (file) {
             handleFile(file);
+        }
 
-        });
+    }
+);
 
 
-        /* =========================================================
-           HANDLE IMAGE
-        ========================================================= */
+cameraInput.addEventListener(
+    "change",
+    event => {
 
-        function handleFile(file) {
+        const file =
+            event.target.files[0];
 
-            if (!file.type.startsWith("image/")) {
+        if (file) {
+            handleFile(file);
+        }
 
-                showError("That isn't an image.");
+    }
+);
 
-                return;
+
+/* =========================================================
+   DRAG AND DROP
+========================================================= */
+
+["dragenter","dragover"].forEach(
+    eventName => {
+
+        dropZone.addEventListener(
+            eventName,
+            event => {
+
+                event.preventDefault();
+
+                dropZone.classList.add(
+                    "dragover"
+                );
+
             }
+        );
 
-            selectedFile = file;
-
-            clearError();
-
-            const reader = new FileReader();
-
-            reader.onload = event => {
-
-                previewImage.src = event.target.result;
-
-                previewArea.classList.add("show");
-
-                dropZone.style.display = "none";
-
-                results.classList.remove("show");
-
-            };
-
-            reader.readAsDataURL(file);
-        }
+    }
+);
 
 
-        /* =========================================================
-           REMOVE IMAGE
-        ========================================================= */
+["dragleave","drop"].forEach(
+    eventName => {
 
-        removeBtn.addEventListener("click", resetScanner);
+        dropZone.addEventListener(
+            eventName,
+            event => {
 
-        document
-            .getElementById("scanAgainBtn")
-            .addEventListener("click", resetScanner);
+                event.preventDefault();
 
+                dropZone.classList.remove(
+                    "dragover"
+                );
 
-        function resetScanner() {
-
-            selectedFile = null;
-
-            previewImage.src = "";
-
-            previewArea.classList.remove("show");
-
-            dropZone.style.display = "flex";
-
-            results.classList.remove("show");
-
-            statusBox.classList.remove("show");
-
-            clearError();
-
-            fileInput.value = "";
-            cameraInput.value = "";
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-
-
-        /* =========================================================
-           ERROR HANDLING
-        ========================================================= */
-
-        function showError(message) {
-
-            errorBox.textContent = message;
-
-            errorBox.classList.add("show");
-
-        }
-
-        function clearError() {
-
-            errorBox.textContent = "";
-
-            errorBox.classList.remove("show");
-
-        }
-
-
-        /* =========================================================
-           LOAD MOBILENET
-        ========================================================= */
-
-        async function loadModel() {
-
-            if (model) {
-                return model;
             }
+        );
 
-            statusText.textContent = "LOADING VISION";
+    }
+);
 
-            progressBar.style.width = "15%";
 
-            model = await mobilenet.load();
+dropZone.addEventListener(
+    "drop",
+    event => {
 
-            progressBar.style.width = "35%";
+        const file =
+            event.dataTransfer.files[0];
 
-            return model;
+        if (!file) {
+            return;
         }
 
+        handleFile(file);
 
-        /* =========================================================
-           VISUAL IMAGE ANALYSIS
-        ========================================================= */
+    }
+);
 
-        async function extractVisualFeatures(file) {
 
-            return new Promise((resolve, reject) => {
+/* =========================================================
+   HANDLE FILE
+========================================================= */
 
-                const img = new Image();
+function handleFile(file) {
 
-                const url = URL.createObjectURL(file);
+    if (!file.type.startsWith("image/")) {
 
-                img.onload = () => {
+        showError(
+            "Pazhu needs an image, human."
+        );
+
+        return;
+    }
+
+    selectedFile = file;
+
+    clearError();
+
+    const reader =
+        new FileReader();
+
+    reader.onload =
+        event => {
+
+            previewImage.src =
+                event.target.result;
+
+            previewArea.classList.add(
+                "show"
+            );
+
+            dropZone.style.display =
+                "none";
+
+            results.classList.remove(
+                "show"
+            );
+
+        };
+
+    reader.readAsDataURL(file);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetScanner() {
+
+    selectedFile = null;
+
+    previewImage.src = "";
+
+    previewArea.classList.remove(
+        "show"
+    );
+
+    dropZone.style.display =
+        "flex";
+
+    results.classList.remove(
+        "show"
+    );
+
+    statusBox.classList.remove(
+        "show"
+    );
+
+    clearError();
+
+    fileInput.value = "";
+    cameraInput.value = "";
+}
+
+
+removeBtn.addEventListener(
+    "click",
+    resetScanner
+);
+
+
+document
+    .getElementById("scanAgainBtn")
+    .addEventListener(
+        "click",
+        resetScanner
+    );
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function showError(message) {
+
+    errorBox.textContent =
+        message;
+
+    errorBox.classList.add(
+        "show"
+    );
+}
+
+
+function clearError() {
+
+    errorBox.textContent =
+        "";
+
+    errorBox.classList.remove(
+        "show"
+    );
+}
+
+
+/* =========================================================
+   LOAD MOBILENET
+========================================================= */
+
+async function loadModel() {
+
+    if (model) {
+        return model;
+    }
+
+    statusText.textContent =
+        "LOADING VISION";
+
+    progressBar.style.width =
+        "15%";
+
+    model =
+        await mobilenet.load();
+
+    progressBar.style.width =
+        "35%";
+
+    return model;
+}
+
+
+/* =========================================================
+   VISUAL ANALYSIS
+========================================================= */
+
+async function extractVisualFeatures(file) {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            const img =
+                new Image();
+
+            const url =
+                URL.createObjectURL(file);
+
+            img.onload =
+                () => {
 
                     try {
 
-                        const canvas = document.createElement("canvas");
+                        const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
 
                         const size = 100;
 
-                        canvas.width = size;
-                        canvas.height = size;
+                        canvas.width =
+                            size;
 
-                        const ctx = canvas.getContext("2d", {
-                            willReadFrequently: true
-                        });
+                        canvas.height =
+                            size;
 
-                        ctx.drawImage(img, 0, 0, size, size);
+                        const ctx =
+                            canvas.getContext(
+                                "2d",
+                                {
+                                    willReadFrequently:
+                                        true
+                                }
+                            );
 
-                        const pixels = ctx.getImageData(
+                        ctx.drawImage(
+                            img,
                             0,
                             0,
                             size,
                             size
-                        ).data;
+                        );
+
+                        const pixels =
+                            ctx.getImageData(
+                                0,
+                                0,
+                                size,
+                                size
+                            ).data;
+
 
                         let totalR = 0;
                         let totalG = 0;
@@ -1480,49 +2003,85 @@
                         let darkPixels = 0;
                         let brightPixels = 0;
 
+                        let saturatedPixels = 0;
+
                         let yellowPixels = 0;
                         let redPixels = 0;
                         let greenPixels = 0;
                         let orangePixels = 0;
 
-                        let saturatedPixels = 0;
 
-                        const pixelCount = pixels.length / 4;
+                        const pixelCount =
+                            pixels.length / 4;
 
-                        for (let i = 0; i < pixels.length; i += 4) {
 
-                            const r = pixels[i];
-                            const g = pixels[i + 1];
-                            const b = pixels[i + 2];
+                        for (
+                            let i = 0;
+                            i < pixels.length;
+                            i += 4
+                        ) {
+
+                            const r =
+                                pixels[i];
+
+                            const g =
+                                pixels[i + 1];
+
+                            const b =
+                                pixels[i + 2];
+
 
                             totalR += r;
                             totalG += g;
                             totalB += b;
 
+
                             const value =
                                 (r + g + b) / 3;
 
-                            brightness += value;
+
+                            brightness +=
+                                value;
+
 
                             if (value < 65) {
                                 darkPixels++;
                             }
 
+
                             if (value > 205) {
                                 brightPixels++;
                             }
 
-                            const max = Math.max(r, g, b);
-                            const min = Math.min(r, g, b);
+
+                            const max =
+                                Math.max(
+                                    r,
+                                    g,
+                                    b
+                                );
+
+                            const min =
+                                Math.min(
+                                    r,
+                                    g,
+                                    b
+                                );
+
 
                             const saturation =
                                 max === 0
                                     ? 0
-                                    : (max - min) / max;
+                                    : (max - min) /
+                                      max;
 
-                            if (saturation > 0.45) {
+
+                            if (
+                                saturation > .45
+                            ) {
                                 saturatedPixels++;
                             }
+
 
                             if (
                                 r > 130 &&
@@ -1533,6 +2092,7 @@
                                 yellowPixels++;
                             }
 
+
                             if (
                                 r > 140 &&
                                 r > g * 1.25 &&
@@ -1541,12 +2101,14 @@
                                 redPixels++;
                             }
 
+
                             if (
                                 g > r * 1.15 &&
                                 g > b * 1.1
                             ) {
                                 greenPixels++;
                             }
+
 
                             if (
                                 r > 150 &&
@@ -1556,806 +2118,1547 @@
                             ) {
                                 orangePixels++;
                             }
+
                         }
+
 
                         const avgR =
-                            Math.round(totalR / pixelCount);
+                            totalR /
+                            pixelCount;
 
                         const avgG =
-                            Math.round(totalG / pixelCount);
+                            totalG /
+                            pixelCount;
 
                         const avgB =
-                            Math.round(totalB / pixelCount);
+                            totalB /
+                            pixelCount;
+
 
                         const avgBrightness =
-                            brightness / pixelCount;
+                            brightness /
+                            pixelCount;
+
 
                         const darkRatio =
-                            darkPixels / pixelCount;
+                            darkPixels /
+                            pixelCount;
+
 
                         const brightRatio =
-                            brightPixels / pixelCount;
+                            brightPixels /
+                            pixelCount;
+
 
                         const saturationRatio =
-                            saturatedPixels / pixelCount;
+                            saturatedPixels /
+                            pixelCount;
 
-                        let dominantColor = "mixed";
 
                         const ratios = {
-                            yellow: yellowPixels / pixelCount,
-                            red: redPixels / pixelCount,
-                            green: greenPixels / pixelCount,
-                            orange: orangePixels / pixelCount
+
+                            yellow:
+                                yellowPixels /
+                                pixelCount,
+
+                            red:
+                                redPixels /
+                                pixelCount,
+
+                            green:
+                                greenPixels /
+                                pixelCount,
+
+                            orange:
+                                orangePixels /
+                                pixelCount
+
                         };
 
-                        const strongest =
-                            Object.entries(ratios)
-                                .sort((a, b) => b[1] - a[1])[0];
 
-                        if (strongest[1] > 0.08) {
-                            dominantColor = strongest[0];
+                        const strongest =
+                            Object.entries(
+                                ratios
+                            ).sort(
+                                (a,b) =>
+                                    b[1] - a[1]
+                            )[0];
+
+
+                        let dominantColor =
+                            "mixed";
+
+
+                        if (
+                            strongest[1] > .08
+                        ) {
+
+                            dominantColor =
+                                strongest[0];
+
                         }
+
 
                         resolve({
 
-                            averageR: avgR,
-                            averageG: avgG,
-                            averageB: avgB,
+                            averageR:
+                                Math.round(
+                                    avgR
+                                ),
+
+                            averageG:
+                                Math.round(
+                                    avgG
+                                ),
+
+                            averageB:
+                                Math.round(
+                                    avgB
+                                ),
 
                             brightness:
                                 Number(
-                                    (avgBrightness / 255).toFixed(3)
+                                    (
+                                        avgBrightness /
+                                        255
+                                    ).toFixed(3)
                                 ),
 
                             darkRatio:
-                                Number(darkRatio.toFixed(3)),
+                                Number(
+                                    darkRatio.toFixed(3)
+                                ),
 
                             brightRatio:
-                                Number(brightRatio.toFixed(3)),
+                                Number(
+                                    brightRatio.toFixed(3)
+                                ),
 
                             saturationRatio:
-                                Number(saturationRatio.toFixed(3)),
+                                Number(
+                                    saturationRatio.toFixed(3)
+                                ),
 
-                            color: dominantColor,
+                            color:
+                                dominantColor,
 
                             yellowRatio:
-                                Number(ratios.yellow.toFixed(3)),
+                                Number(
+                                    ratios.yellow.toFixed(3)
+                                ),
 
                             redRatio:
-                                Number(ratios.red.toFixed(3)),
+                                Number(
+                                    ratios.red.toFixed(3)
+                                ),
 
                             greenRatio:
-                                Number(ratios.green.toFixed(3)),
+                                Number(
+                                    ratios.green.toFixed(3)
+                                ),
 
                             orangeRatio:
-                                Number(ratios.orange.toFixed(3))
+                                Number(
+                                    ratios.orange.toFixed(3)
+                                )
 
                         });
 
-                    } catch (error) {
+                    }
+
+                    catch(error) {
 
                         reject(error);
 
-                    } finally {
+                    }
 
-                        URL.revokeObjectURL(url);
+                    finally {
+
+                        URL.revokeObjectURL(
+                            url
+                        );
 
                     }
+
                 };
 
-                img.onerror = () => {
 
-                    URL.revokeObjectURL(url);
+            img.onerror =
+                () => {
+
+                    URL.revokeObjectURL(
+                        url
+                    );
 
                     reject(
-                        new Error("Could not read the image.")
+                        new Error(
+                            "Could not read image."
+                        )
                     );
 
                 };
 
-                img.src = url;
 
-            });
+            img.src =
+                url;
 
         }
+    );
+}
 
 
-        /* =========================================================
-           ANALYZE
-        ========================================================= */
+/* =========================================================
+   ANALYZE
+========================================================= */
 
-        analyzeBtn.addEventListener("click", analyzeFruit);
-
-
-        async function analyzeFruit() {
-
-            if (!selectedFile) {
-
-                showError("Upload a fruit first.");
-
-                return;
-            }
-
-            clearError();
-
-            results.classList.remove("show");
-
-            statusBox.classList.add("show");
-
-            progressBar.style.width = "5%";
-
-            analyzeBtn.disabled = true;
-
-            try {
-
-                statusText.textContent = "READING IMAGE";
-
-                const visual =
-                    await extractVisualFeatures(selectedFile);
-
-                progressBar.style.width = "25%";
-
-                statusText.textContent =
-                    "LOADING FRUIT VISION";
-
-                const visionModel =
-                    await loadModel();
-
-                progressBar.style.width = "45%";
-
-                statusText.textContent =
-                    "IDENTIFYING FRUIT";
-
-                const predictions =
-                    await visionModel.classify(
-                        previewImage,
-                        5
-                    );
-
-                progressBar.style.width = "60%";
-
-                statusText.textContent =
-                    "ASKING PAZHU";
-
-                const formData = new FormData();
-
-                formData.append(
-                    "image",
-                    selectedFile
-                );
-
-                formData.append(
-                    "prediction",
-                    JSON.stringify(predictions)
-                );
-
-                formData.append(
-                    "visual",
-                    JSON.stringify(visual)
-                );
-
-                const response =
-                    await fetch("/api/analyze", {
-                        method: "POST",
-                        body: formData
-                    });
-
-                progressBar.style.width = "80%";
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        `Server error: ${response.status}`
-                    );
-                }
-
-                const data =
-                    await response.json();
-
-                currentAnalysis =
-                    data.analysis ||
-                    data.result ||
-                    data;
-
-                progressBar.style.width = "100%";
-
-                statusText.textContent =
-                    "VERDICT READY";
-
-                renderResults(
-                    currentAnalysis,
-                    visual,
-                    predictions
-                );
-
-                setTimeout(() => {
-
-                    statusBox.classList.remove("show");
-
-                    results.classList.add("show");
-
-                    results.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                }, 500);
-
-            } catch (error) {
-
-                console.error(error);
-
-                showError(
-                    "Pazhu crashed. " +
-                    (error.message || "Something went wrong.")
-                );
-
-                statusBox.classList.remove("show");
-
-            } finally {
-
-                analyzeBtn.disabled = false;
-
-            }
-        }
+analyzeBtn.addEventListener(
+    "click",
+    analyzeFruit
+);
 
 
-        /* =========================================================
-           SAFE VALUE HELPERS
-        ========================================================= */
+async function analyzeFruit() {
 
-        function textValue(value, fallback = "--") {
+    if (!selectedFile) {
 
-            if (
-                value === undefined ||
-                value === null ||
-                value === ""
-            ) {
-                return fallback;
-            }
+        showError(
+            "Give Pazhu a fruit first."
+        );
 
-            return String(value);
-        }
+        return;
+    }
 
 
-        function numericScore(value, fallback = 67) {
+    clearError();
 
-            if (
-                value === undefined ||
-                value === null ||
-                value === ""
-            ) {
-                return fallback;
-            }
+    results.classList.remove(
+        "show"
+    );
 
-            const number =
-                parseFloat(
-                    String(value).replace(/[^\d.]/g, "")
-                );
+    statusBox.classList.add(
+        "show"
+    );
 
-            if (!Number.isFinite(number) || number <= 0) {
-                return fallback;
-            }
+    progressBar.style.width =
+        "5%";
 
-            return Math.max(
-                18,
-                Math.min(
-                    97,
-                    Math.round(number)
-                )
+
+    analyzeBtn.disabled =
+        true;
+
+
+    try {
+
+        statusText.textContent =
+            "READING PIXELS";
+
+
+        const visual =
+            await extractVisualFeatures(
+                selectedFile
             );
+
+
+        progressBar.style.width =
+            "25%";
+
+
+        statusText.textContent =
+            "LOADING FRUIT VISION";
+
+
+        const visionModel =
+            await loadModel();
+
+
+        progressBar.style.width =
+            "45%";
+
+
+        statusText.textContent =
+            "IDENTIFYING FRUIT";
+
+
+        const predictions =
+            await visionModel.classify(
+                previewImage,
+                5
+            );
+
+
+        progressBar.style.width =
+            "60%";
+
+
+        statusText.textContent =
+            "ASKING PAZHU";
+
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "image",
+            selectedFile
+        );
+
+
+        formData.append(
+            "prediction",
+            JSON.stringify(
+                predictions
+            )
+        );
+
+
+        formData.append(
+            "visual",
+            JSON.stringify(
+                visual
+            )
+        );
+
+
+        const response =
+            await fetch(
+                "/api/analyze",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Server error: ${response.status}`
+            );
+
         }
 
 
-        function formatRecipe(recipe) {
-
-            if (!recipe) {
-
-                return {
-                    name: "PAZHU HAS NO IDEA",
-                    description:
-                        "The recipe database has emotionally disconnected."
-                };
-            }
-
-            if (typeof recipe === "string") {
-
-                return {
-                    name: recipe,
-                    description:
-                        "A highly questionable Pazhu-certified experiment."
-                };
-            }
-
-            return {
-                name:
-                    recipe.name ||
-                    recipe.title ||
-                    "MYSTERY FRUIT EXPERIMENT",
-
-                description:
-                    recipe.description ||
-                    recipe.instructions ||
-                    "Proceed with caution. Pazhu takes no responsibility."
-            };
-        }
+        progressBar.style.width =
+            "85%";
 
 
-        /* =========================================================
-           RENDER RESULTS
-        ========================================================= */
+        const data =
+            await response.json();
 
-        function renderResults(
-            analysis,
+
+        currentAnalysis =
+            data.analysis ||
+            data.result ||
+            data;
+
+
+        progressBar.style.width =
+            "100%";
+
+
+        statusText.textContent =
+            "VERDICT READY";
+
+
+        renderResults(
+            currentAnalysis,
             visual,
             predictions
-        ) {
+        );
 
-            analysis =
-                analysis || {};
 
-            const fruit =
-                textValue(
-                    analysis.fruit ||
-                    analysis.species ||
-                    analysis.fruitName,
-                    "MYSTERY FRUIT"
+        setTimeout(
+            () => {
+
+                statusBox.classList.remove(
+                    "show"
                 );
 
-            const emoji =
-                textValue(
-                    analysis.emoji,
-                    "🍌"
+                results.classList.add(
+                    "show"
                 );
 
-            const subtitle =
-                textValue(
-                    analysis.fruitSubtitle ||
-                    analysis.subtitle,
-                    `${emoji} THE FRUIT HAS ENTERED THE CHAT.`
-                );
-
-            const personality =
-                textValue(
-                    analysis.personality,
-                    "QUESTIONABLE ENERGY"
-                );
-
-            const personalityDescription =
-                textValue(
-                    analysis.personalityDescription ||
-                    analysis.personality_description,
-                    "Pazhu is still judging this specimen."
-                );
-
-            const color =
-                textValue(
-                    analysis.color ||
-                    visual.color,
-                    "MIXED"
-                );
-
-            const ripeness =
-                textValue(
-                    analysis.ripeness ||
-                    analysis.ripenessLabel,
-                    getFallbackRipeness(visual)
-                );
-
-            const condition =
-                textValue(
-                    analysis.condition,
-                    getFallbackCondition(visual)
-                );
-
-            const mood =
-                textValue(
-                    analysis.mood,
-                    getFallbackMood(visual)
-                );
-
-            const score =
-                numericScore(
-                    analysis.compatibility ??
-                    analysis.compatibilityScore,
-                    getFallbackCompatibility(visual)
-                );
-
-            const percentile =
-                analysis.compatibilityPercentile ||
-                analysis.percentile ||
-                `${Math.max(1, Math.min(99, score + 3))}TH PERCENTILE`;
-
-            const pazhuMessage =
-                textValue(
-                    analysis.pazhuMessage ||
-                    analysis.pazhu_message,
-                    "Interesting. I have concerns."
-                );
-
-            const compatibilityMessage =
-                textValue(
-                    analysis.compatibilityMessage ||
-                    analysis.compatibility_message,
-                    "Your fruit compatibility is concerningly acceptable."
-                );
-
-            const recipe =
-                formatRecipe(
-                    analysis.recipe ||
-                    analysis.recipeData
-                );
-
-            const confidence =
-                textValue(
-                    analysis.confidence,
-                    predictions && predictions.length
-                        ? `${Math.round(
-                            (predictions[0].probability || 0) * 100
-                        )}%`
-                        : "--"
-                );
-
-
-            document.getElementById("fruitName").textContent =
-                `${emoji} ${fruit}`;
-
-            document.getElementById("fruitSubtitle").textContent =
-                subtitle;
-
-            document.getElementById("personality").textContent =
-                personality;
-
-            document.getElementById("personalityDescription").textContent =
-                personalityDescription;
-
-            document.getElementById("color").textContent =
-                String(color).toUpperCase();
-
-            document.getElementById("ripeness").textContent =
-                String(ripeness).toUpperCase();
-
-            document.getElementById("condition").textContent =
-                String(condition).toUpperCase();
-
-            document.getElementById("mood").textContent =
-                String(mood).toUpperCase();
-
-            document.getElementById("confidence").textContent =
-                `CONFIDENCE: ${confidence}`;
-
-            document.getElementById("compatibilityScore").textContent =
-                score;
-
-            document.getElementById("compatibilityPercentile").textContent =
-                String(percentile).toUpperCase();
-
-            document.getElementById("pazhuMessage").textContent =
-                pazhuMessage;
-
-            document.getElementById("compatibilityMessage").textContent =
-                compatibilityMessage;
-
-            document.getElementById("recipeName").textContent =
-                recipe.name;
-
-            document.getElementById("recipeDescription").textContent =
-                recipe.description;
-
-            requestAnimationFrame(() => {
-
-                document.getElementById(
-                    "compatibilityBar"
-                ).style.width = `${score}%`;
-
-            });
-        }
-
-
-        /* =========================================================
-           FRONTEND FALLBACKS
-        ========================================================= */
-
-        function getFallbackRipeness(visual) {
-
-            const brightness =
-                visual?.brightness ?? .5;
-
-            const saturation =
-                visual?.saturationRatio ?? .5;
-
-            if (
-                brightness > .75 &&
-                saturation > .4
-            ) {
-                return "RIPE-ISH";
-            }
-
-            if (
-                brightness < .3
-            ) {
-                return "SUSPICIOUSLY DARK";
-            }
-
-            return "MAYBE RIPE";
-        }
-
-
-        function getFallbackCondition(visual) {
-
-            const dark =
-                visual?.darkRatio ?? .2;
-
-            if (dark > .35) {
-                return "HAS SEEN THINGS";
-            }
-
-            if (dark > .18) {
-                return "SLIGHTLY SUS";
-            }
-
-            return "SURVIVING";
-        }
-
-
-        function getFallbackMood(visual) {
-
-            const saturation =
-                visual?.saturationRatio ?? .5;
-
-            if (saturation > .65) {
-                return "LOUD";
-            }
-
-            if (saturation < .25) {
-                return "TIRED";
-            }
-
-            return "UNDECIDED";
-        }
-
-
-        function getFallbackCompatibility(visual) {
-
-            const brightness =
-                visual?.brightness ?? .5;
-
-            const saturation =
-                visual?.saturationRatio ?? .5;
-
-            const dark =
-                visual?.darkRatio ?? .2;
-
-            let score =
-                55 +
-                brightness * 18 +
-                saturation * 18 -
-                dark * 12;
-
-            return Math.max(
-                18,
-                Math.min(
-                    97,
-                    Math.round(score)
-                )
-            );
-        }
-
-
-        /* =========================================================
-           NAVIGATION
-        ========================================================= */
-
-        scanNav.addEventListener("click", () => {
-
-            scanNav.classList.add("active");
-            chatNav.classList.remove("active");
-
-            document
-                .getElementById("scannerSection")
-                .scrollIntoView({
+                results.scrollIntoView({
                     behavior: "smooth"
                 });
 
-        });
+            },
+            450
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        showError(
+            "Pazhu crashed: " +
+            (
+                error.message ||
+                "unknown error"
+            )
+        );
+
+        statusBox.classList.remove(
+            "show"
+        );
+
+    }
+
+    finally {
+
+        analyzeBtn.disabled =
+            false;
+
+    }
+
+}
 
 
-        chatNav.addEventListener("click", () => {
+/* =========================================================
+   VALUE HELPERS
+========================================================= */
 
-            chatNav.classList.add("active");
-            scanNav.classList.remove("active");
+function textValue(
+    value,
+    fallback
+) {
 
-            chatSection.classList.add("show");
+    if (
+        value === undefined ||
+        value === null ||
+        value === ""
+    ) {
 
-            chatSection.scrollIntoView({
+        return fallback;
+
+    }
+
+    return String(value);
+}
+
+
+function numericScore(
+    value,
+    fallback
+) {
+
+    const n =
+        parseFloat(
+            String(
+                value ?? ""
+            ).replace(
+                /[^\d.]/g,
+                ""
+            )
+        );
+
+
+    if (
+        !Number.isFinite(n) ||
+        n <= 0
+    ) {
+
+        return fallback;
+
+    }
+
+
+    return Math.max(
+        18,
+        Math.min(
+            97,
+            Math.round(n)
+        )
+    );
+}
+
+
+/* =========================================================
+   FRUIT DETECTION FOR RECIPE FALLBACK
+========================================================= */
+
+function cleanFruitName(
+    fruit
+) {
+
+    return String(
+        fruit || ""
+    )
+        .toLowerCase()
+        .replace(
+            /[^a-z ]/g,
+            ""
+        )
+        .trim();
+
+}
+
+
+/* =========================================================
+   WEIRD RECIPE ENGINE
+========================================================= */
+
+function getWeirdRecipe(
+    fruit,
+    ripeness,
+    condition,
+    visual
+) {
+
+    const f =
+        cleanFruitName(
+            fruit
+        );
+
+
+    /*
+       Use image values to select
+       different variants.
+    */
+
+    const brightness =
+        visual?.brightness || .5;
+
+    const saturation =
+        visual?.saturationRatio || .5;
+
+    const dark =
+        visual?.darkRatio || .2;
+
+
+    const signal =
+        Math.floor(
+            (
+                brightness * 100 +
+                saturation * 100 +
+                dark * 100
+            )
+        );
+
+
+    /*
+       BANANA
+    */
+
+    if (
+        f.includes("banana")
+    ) {
+
+        const recipes = [
+
+            {
+                name:
+                    "🍌 Banana Chilli Toast",
+
+                description:
+                    "Mash the banana, spread it on toast, add a tiny pinch of chilli, black salt and lime. Sweet, spicy and unnecessarily dramatic."
+            },
+
+            {
+                name:
+                    "🍌 Banana Pepper Crunch",
+
+                description:
+                    "Slice the banana, add black pepper and a tiny pinch of salt, then pair it with crunchy toast. Pazhu calls this character development."
+            },
+
+            {
+                name:
+                    "🍌 Banana Chaat Incident",
+
+                description:
+                    "Cut banana into pieces and toss with chilli powder, black salt, lime and a little onion. Nobody asked for this. We did it anyway."
+            }
+
+        ];
+
+        return recipes[
+            signal % recipes.length
+        ];
+
+    }
+
+
+    /*
+       APPLE
+    */
+
+    if (
+        f.includes("apple")
+    ) {
+
+        const recipes = [
+
+            {
+                name:
+                    "🍎 Masala Apple Fries",
+
+                description:
+                    "Slice the apple into thin sticks and toss with black salt, chilli powder and lime. Crunchy, sour, spicy chaos."
+            },
+
+            {
+                name:
+                    "🍎 Apple Chilli Chaat",
+
+                description:
+                    "Dice the apple and add chilli, black salt, lime and a little mint. It is basically fruit pretending to be street food."
+            },
+
+            {
+                name:
+                    "🍎 Pepper Apple Toast",
+
+                description:
+                    "Put thin apple slices on toast with a little honey and black pepper. Sweet, crunchy and suspiciously sophisticated."
+            }
+
+        ];
+
+        return recipes[
+            signal % recipes.length
+        ];
+
+    }
+
+
+    /*
+       MANGO
+    */
+
+    if (
+        f.includes("mango")
+    ) {
+
+        const recipes = [
+
+            {
+                name:
+                    "🥭 Mango Pepper Chaat",
+
+                description:
+                    "Dice the mango and attack it with black pepper, chilli powder, black salt and lime. Mango has officially become street food."
+            },
+
+            {
+                name:
+                    "🥭 Mango Masala Toast",
+
+                description:
+                    "Spread mango pieces over toast and add chilli, black salt and a tiny squeeze of lime. Completely unnecessary. Surprisingly good."
+            },
+
+            {
+                name:
+                    "🥭 Mango Chilli Crunch",
+
+                description:
+                    "Slice mango thin and pair it with crunchy roasted snacks, chilli and lime. Sweet meets spicy in a questionable alliance."
+            }
+
+        ];
+
+        return recipes[
+            signal % recipes.length
+        ];
+
+    }
+
+
+    /*
+       ORANGE
+    */
+
+    if (
+        f.includes("orange")
+    ) {
+
+        const recipes = [
+
+            {
+                name:
+                    "🍊 Orange Chilli Popcorn",
+
+                description:
+                    "Mix tiny pieces of orange zest into popcorn with chilli-salt. Citrus cinema experience unlocked."
+            },
+
+            {
+                name:
+                    "🍊 Orange Masala Cups",
+
+                description:
+                    "Separate orange segments and add black salt, chilli powder and mint. Somehow the fruit became a snack attack."
+            },
+
+            {
+                name:
+                    "🍊 Citrus Pepper Toast",
+
+                description:
+                    "Add thin orange pieces to toast with a tiny drizzle of honey and black pepper. Bright, weird and aggressively citrusy."
+            }
+
+        ];
+
+        return recipes[
+            signal % recipes.length
+        ];
+
+    }
+
+
+    /*
+       STRAWBERRY
+    */
+
+    if (
+        f.includes("strawberry")
+    ) {
+
+        const recipes = [
+
+            {
+                name:
+                    "🍓 Strawberry Pepper Toast",
+
+                description:
+                    "Put strawberries on toast with a little honey, black pepper and a tiny pinch of salt. Sounds suspicious. Works anyway."
+            },
+
+            {
+                name:
+                    "🍓 Strawberry Chilli Bites",
+
+                description:
+                    "Slice strawberries and add a tiny amount of chilli, black salt and lime. Sweet fruit suddenly develops an attitude."
+            },
+
+            {
+                name:
+                    "🍓 Strawberry Masala Crunch",
+
+                description:
+                    "Combine sliced strawberries with crunchy roasted snacks, a little honey and black pepper. Dessert accidentally became chaos."
+            }
+
+        ];
+
+        return recipes[
+            signal % recipes.length
+        ];
+
+    }
+
+
+    /*
+       PINEAPPLE
+    */
+
+    if (
+        f.includes("pineapple")
+    ) {
+
+        const recipes = [
+
+            {
+                name:
+                    "🍍 Pineapple Pepper Chips",
+
+                description:
+                    "Slice pineapple thin, add chilli powder and salt, then crisp it until the edges caramelise. Sweet, spicy and slightly unhinged."
+            },
+
+            {
+                name:
+                    "🍍 Pineapple Masala Bites",
+
+                description:
+                    "Cut pineapple into chunks and toss with black salt, chilli, lime and mint. Tropical fruit has entered its villain era."
+            },
+
+            {
+                name:
+                    "🍍 Pineapple Toast Attack",
+
+                description:
+                    "Put pineapple pieces on toast with black pepper and a tiny drizzle of honey. Pizza debates were apparently not enough."
+            }
+
+        ];
+
+        return recipes[
+            signal % recipes.length
+        ];
+
+    }
+
+
+    /*
+       WATERMELON
+    */
+
+    if (
+        f.includes("watermelon")
+    ) {
+
+        const recipes = [
+
+            {
+                name:
+                    "🍉 Watermelon Masala Bites",
+
+                description:
+                    "Cube watermelon and add black salt, chilli powder, lime and mint. Hydration, but with unnecessary drama."
+            },
+
+            {
+                name:
+                    "🍉 Watermelon Pepper Cups",
+
+                description:
+                    "Make watermelon cubes, add lime, black pepper and mint. It looks innocent until Pazhu starts judging it."
+            },
+
+            {
+                name:
+                    "🍉 Watermelon Chilli Crunch",
+
+                description:
+                    "Pair juicy watermelon cubes with a crunchy roasted topping, black salt and chilli. Texture confusion achieved."
+            }
+
+        ];
+
+        return recipes[
+            signal % recipes.length
+        ];
+
+    }
+
+
+    /*
+       UNKNOWN FRUIT
+    */
+
+    const mysteryRecipes = [
+
+        {
+            name:
+                "❓ Mystery Fruit Masala",
+
+            description:
+                "Cut the unidentified fruit into pieces and add lime, black salt, mint and a tiny pinch of chilli. Pazhu has absolutely no idea what you are doing."
+        },
+
+        {
+            name:
+                "❓ Pazhu's Emergency Fruit Toast",
+
+            description:
+                "Put the mysterious fruit on toast with black pepper and a little honey. This recipe was created because nobody knew what else to do."
+        },
+
+        {
+            name:
+                "❓ Suspicious Fruit Chaat",
+
+            description:
+                "Dice the mystery fruit and add lime, black salt, chilli and mint. Congratulations. You have created culinary uncertainty."
+        }
+
+    ];
+
+
+    return mysteryRecipes[
+        signal % mysteryRecipes.length
+    ];
+
+}
+
+
+/* =========================================================
+   FALLBACK VISUAL ANALYSIS
+========================================================= */
+
+function fallbackRipeness(
+    visual
+) {
+
+    const brightness =
+        visual?.brightness ?? .5;
+
+    const saturation =
+        visual?.saturationRatio ?? .5;
+
+
+    if (
+        brightness > .75 &&
+        saturation > .4
+    ) {
+
+        return "RIPE-ISH";
+
+    }
+
+
+    if (
+        brightness < .3
+    ) {
+
+        return "VERY RIPE / DARK";
+
+    }
+
+
+    return "MAYBE RIPE";
+}
+
+
+function fallbackCondition(
+    visual
+) {
+
+    const dark =
+        visual?.darkRatio ?? .2;
+
+
+    if (
+        dark > .35
+    ) {
+
+        return "HAS SEEN THINGS";
+
+    }
+
+
+    if (
+        dark > .18
+    ) {
+
+        return "SLIGHTLY SUS";
+
+    }
+
+
+    return "SURVIVING";
+}
+
+
+function fallbackMood(
+    visual
+) {
+
+    const saturation =
+        visual?.saturationRatio ?? .5;
+
+
+    if (
+        saturation > .65
+    ) {
+
+        return "LOUD";
+
+    }
+
+
+    if (
+        saturation < .25
+    ) {
+
+        return "TIRED";
+
+    }
+
+
+    return "UNDECIDED";
+}
+
+
+function fallbackCompatibility(
+    visual
+) {
+
+    const brightness =
+        visual?.brightness ?? .5;
+
+    const saturation =
+        visual?.saturationRatio ?? .5;
+
+    const dark =
+        visual?.darkRatio ?? .2;
+
+
+    const score =
+        55 +
+        brightness * 18 +
+        saturation * 18 -
+        dark * 12;
+
+
+    return Math.max(
+        18,
+        Math.min(
+            97,
+            Math.round(score)
+        )
+    );
+}
+
+
+/* =========================================================
+   RENDER RESULTS
+========================================================= */
+
+function renderResults(
+    analysis,
+    visual,
+    predictions
+) {
+
+    analysis =
+        analysis || {};
+
+
+    const fruit =
+        textValue(
+            analysis.fruit ||
+            analysis.species ||
+            analysis.fruitName,
+            "MYSTERY FRUIT"
+        );
+
+
+    const emoji =
+        textValue(
+            analysis.emoji,
+            "🍌"
+        );
+
+
+    const subtitle =
+        textValue(
+            analysis.fruitSubtitle ||
+            analysis.subtitle,
+            "THE FRUIT HAS ENTERED THE CHAT."
+        );
+
+
+    const personality =
+        textValue(
+            analysis.personality,
+            "QUESTIONABLE ENERGY"
+        );
+
+
+    const personalityDescription =
+        textValue(
+            analysis.personalityDescription ||
+            analysis.personality_description,
+            "Pazhu is still judging this specimen."
+        );
+
+
+    const color =
+        textValue(
+            analysis.color ||
+            visual?.color,
+            "MIXED"
+        );
+
+
+    const ripeness =
+        textValue(
+            analysis.ripeness ||
+            analysis.ripenessLabel,
+            fallbackRipeness(
+                visual
+            )
+        );
+
+
+    const condition =
+        textValue(
+            analysis.condition,
+            fallbackCondition(
+                visual
+            )
+        );
+
+
+    const mood =
+        textValue(
+            analysis.mood,
+            fallbackMood(
+                visual
+            )
+        );
+
+
+    const score =
+        numericScore(
+            analysis.compatibility ??
+            analysis.compatibilityScore,
+            fallbackCompatibility(
+                visual
+            )
+        );
+
+
+    const percentile =
+        analysis.compatibilityPercentile ||
+        analysis.percentile ||
+        `${score + 3}TH PERCENTILE`;
+
+
+    const pazhuMessage =
+        textValue(
+            analysis.pazhuMessage ||
+            analysis.pazhu_message,
+            "Interesting. I have concerns."
+        );
+
+
+    const compatibilityMessage =
+        textValue(
+            analysis.compatibilityMessage ||
+            analysis.compatibility_message,
+            "Your fruit compatibility is concerningly acceptable."
+        );
+
+
+    /*
+       IMPORTANT:
+       Recipe uses ACTUAL FRUIT +
+       RIPENESS +
+       CONDITION +
+       IMAGE SIGNALS.
+    */
+
+    const recipe =
+        getWeirdRecipe(
+            fruit,
+            ripeness,
+            condition,
+            visual
+        );
+
+
+    const confidence =
+        textValue(
+            analysis.confidence,
+            predictions &&
+            predictions.length
+                ? `${Math.round(
+                    (
+                        predictions[0]
+                            .probability ||
+                        0
+                    ) * 100
+                )}%`
+                : "--"
+        );
+
+
+    /* FRUIT */
+
+    document.getElementById(
+        "fruitName"
+    ).textContent =
+        `${emoji} ${fruit}`;
+
+
+    document.getElementById(
+        "fruitSubtitle"
+    ).textContent =
+        subtitle;
+
+
+    /* PERSONALITY */
+
+    document.getElementById(
+        "personality"
+    ).textContent =
+        personality;
+
+
+    document.getElementById(
+        "personalityDescription"
+    ).textContent =
+        personalityDescription;
+
+
+    /* VISUAL */
+
+    document.getElementById(
+        "color"
+    ).textContent =
+        String(
+            color
+        ).toUpperCase();
+
+
+    document.getElementById(
+        "ripeness"
+    ).textContent =
+        String(
+            ripeness
+        ).toUpperCase();
+
+
+    document.getElementById(
+        "condition"
+    ).textContent =
+        String(
+            condition
+        ).toUpperCase();
+
+
+    document.getElementById(
+        "mood"
+    ).textContent =
+        String(
+            mood
+        ).toUpperCase();
+
+
+    /* CONFIDENCE */
+
+    document.getElementById(
+        "confidence"
+    ).textContent =
+        `CONFIDENCE: ${confidence}`;
+
+
+    /* COMPATIBILITY */
+
+    document.getElementById(
+        "compatibilityScore"
+    ).textContent =
+        score;
+
+
+    document.getElementById(
+        "compatibilityPercentile"
+    ).textContent =
+        String(
+            percentile
+        ).toUpperCase();
+
+
+    document.getElementById(
+        "compatibilityBar"
+    ).style.width =
+        `${score}%`;
+
+
+    /* PAZHU */
+
+    document.getElementById(
+        "pazhuMessage"
+    ).textContent =
+        pazhuMessage;
+
+
+    document.getElementById(
+        "compatibilityMessage"
+    ).textContent =
+        compatibilityMessage;
+
+
+    /* RECIPE */
+
+    document.getElementById(
+        "recipeName"
+    ).textContent =
+        recipe.name;
+
+
+    document.getElementById(
+        "recipeDescription"
+    ).textContent =
+        recipe.description;
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+const scanNav =
+    document.getElementById(
+        "scanNav"
+    );
+
+const chatNav =
+    document.getElementById(
+        "chatNav"
+    );
+
+
+scanNav.addEventListener(
+    "click",
+    () => {
+
+        scanNav.classList.add(
+            "active"
+        );
+
+        chatNav.classList.remove(
+            "active"
+        );
+
+        document
+            .getElementById(
+                "scannerSection"
+            )
+            .scrollIntoView({
                 behavior: "smooth"
             });
 
+    }
+);
+
+
+chatNav.addEventListener(
+    "click",
+    () => {
+
+        chatNav.classList.add(
+            "active"
+        );
+
+        scanNav.classList.remove(
+            "active"
+        );
+
+        chatSection.classList.add(
+            "show"
+        );
+
+        chatSection.scrollIntoView({
+            behavior: "smooth"
         });
 
-
-        /* =========================================================
-           CHAT
-        ========================================================= */
-
-        const chatInput =
-            document.getElementById("chatInput");
-
-        const sendChat =
-            document.getElementById("sendChat");
-
-        const chatMessages =
-            document.getElementById("chatMessages");
+    }
+);
 
 
-        sendChat.addEventListener(
-            "click",
-            sendMessage
-        );
+/* =========================================================
+   CHAT
+========================================================= */
+
+const chatInput =
+    document.getElementById(
+        "chatInput"
+    );
+
+const sendChat =
+    document.getElementById(
+        "sendChat"
+    );
+
+const chatMessages =
+    document.getElementById(
+        "chatMessages"
+    );
 
 
-        chatInput.addEventListener(
-            "keydown",
-            event => {
-
-                if (event.key === "Enter") {
-                    sendMessage();
-                }
-
-            }
-        );
+sendChat.addEventListener(
+    "click",
+    sendMessage
+);
 
 
-        function sendMessage() {
+chatInput.addEventListener(
+    "keydown",
+    event => {
 
-            const text =
-                chatInput.value.trim();
-
-            if (!text) {
-                return;
-            }
-
-            addChatMessage(
-                text,
-                "user"
-            );
-
-            chatInput.value = "";
-
-            setTimeout(() => {
-
-                const reply =
-                    pazhuReply(text);
-
-                addChatMessage(
-                    reply,
-                    "pazhu"
-                );
-
-            }, 450);
-
-        }
-
-
-        function addChatMessage(
-            text,
-            type
+        if (
+            event.key === "Enter"
         ) {
 
-            const message =
-                document.createElement("div");
-
-            message.className =
-                `message ${type}`;
-
-            const bubble =
-                document.createElement("div");
-
-            bubble.className =
-                "bubble";
-
-            bubble.textContent =
-                text;
-
-            message.appendChild(
-                bubble
-            );
-
-            chatMessages.appendChild(
-                message
-            );
-
-            chatMessages.scrollTop =
-                chatMessages.scrollHeight;
+            sendMessage();
 
         }
 
-
-        function pazhuReply(text) {
-
-            const lower =
-                text.toLowerCase();
-
-            if (
-                lower.includes("banana")
-            ) {
-
-                return "Banana? Respectable. Also dangerously overconfident.";
-
-            }
-
-            if (
-                lower.includes("apple")
-            ) {
-
-                return "Apple has main-character energy. I don't trust it.";
-
-            }
-
-            if (
-                lower.includes("mango")
-            ) {
-
-                return "Mango is basically summer with commitment issues.";
-
-            }
-
-            if (
-                lower.includes("recipe") ||
-                lower.includes("cook") ||
-                lower.includes("food")
-            ) {
-
-                return "Tell me the fruit and I will invent something that probably should not exist.";
-
-            }
-
-            if (
-                lower.includes("who are you") ||
-                lower.includes("your name")
-            ) {
-
-                return "I'm Pazhu 🍌. Fruit analyst. Roast specialist. Unlicensed therapist.";
-
-            }
-
-            if (
-                lower.includes("hello") ||
-                lower.includes("hi") ||
-                lower.includes("hey")
-            ) {
-
-                return "Hello human. Have you brought tribute in the form of fruit?";
-
-            }
-
-            if (
-                lower.includes("love") ||
-                lower.includes("like")
-            ) {
-
-                return "I don't do romance. I do fruit compatibility. Much more scientifically unnecessary.";
-
-            }
-
-            return "Interesting question. Unfortunately I am a banana with Wi-Fi and questionable qualifications.";
-
-        }
+    }
+);
 
 
-        /* =========================================================
-           INITIAL STATE
-        ========================================================= */
+function sendMessage() {
 
-        console.log(
-            "🍌 PAZHAM.EXE ONLINE"
+    const text =
+        chatInput.value.trim();
+
+
+    if (!text) {
+        return;
+    }
+
+
+    addChatMessage(
+        text,
+        "user"
+    );
+
+
+    chatInput.value =
+        "";
+
+
+    setTimeout(
+        () => {
+
+            addChatMessage(
+                pazhuReply(text),
+                "pazhu"
+            );
+
+        },
+        450
+    );
+
+}
+
+
+function addChatMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.createElement(
+            "div"
         );
 
-        console.log(
-            "NINAK VAYYE? scanner initialized."
+    message.className =
+        `message ${type}`;
+
+
+    const bubble =
+        document.createElement(
+            "div"
         );
 
-    </script>
+    bubble.className =
+        "bubble";
+
+
+    bubble.textContent =
+        text;
+
+
+    message.appendChild(
+        bubble
+    );
+
+
+    chatMessages.appendChild(
+        message
+    );
+
+
+    chatMessages.scrollTop =
+        chatMessages.scrollHeight;
+
+}
+
+
+/* =========================================================
+   PAZHU CHAT
+========================================================= */
+
+function pazhuReply(
+    text
+) {
+
+    const lower =
+        text.toLowerCase();
+
+
+    if (
+        lower.includes("banana")
+    ) {
+
+        return "Banana? Respectable. Also dangerously overconfident.";
+
+    }
+
+
+    if (
+        lower.includes("apple")
+    ) {
+
+        return "Apple has main-character energy. I don't trust it.";
+
+    }
+
+
+    if (
+        lower.includes("mango")
+    ) {
+
+        return "Mango is basically summer with commitment issues.";
+
+    }
+
+
+    if (
+        lower.includes("recipe") ||
+        lower.includes("food") ||
+        lower.includes("cook")
+    ) {
+
+        return "Give me the fruit name and I shall create culinary chaos.";
+
+    }
+
+
+    if (
+        lower.includes("who are you") ||
+        lower.includes("your name")
+    ) {
+
+        return "I'm Pazhu 🍌. Fruit analyst. Roast specialist. Unlicensed professional.";
+
+    }
+
+
+    if (
+        lower.includes("hello") ||
+        lower.includes("hi") ||
+        lower.includes("hey")
+    ) {
+
+        return "Hello human. Where is my fruit?";
+
+    }
+
+
+    return "Interesting. Unfortunately I am a banana with questionable qualifications.";
+
+}
+
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+console.log(
+    "🍌 PAZHAM.EXE ONLINE"
+);
+
+console.log(
+    "NINAK VAYYE? scanner initialized."
+);
+
+</script>
 
 </body>
 </html>
+```
