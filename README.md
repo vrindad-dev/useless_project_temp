@@ -53,8 +53,8 @@ For Software:
 )
 *
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+** Feature of Ninak Vayye(<img width="1917" height="852" alt="Screenshot 2026-09-04 030514" src="https://github.com/user-attachments/assets/816e944e-91ea-4c25-bdb1-94b9bd51f153" />
+)
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
