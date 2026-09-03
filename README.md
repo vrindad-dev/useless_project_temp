@@ -45,7 +45,8 @@ http://localhost:3000
 ### Project Documentation
 For Software:
 # Screenshots 
-![** Home screen of Ninak Vayye **](Screenshot 2026-09-04 030355.png)
+![** Home screen of Ninak Vayye **].
+.(Screenshot 2026-09-04 030355.png).
 
 
 ![Screenshot2](Add screenshot 2 here with proper name)
