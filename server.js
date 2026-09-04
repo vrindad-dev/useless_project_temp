@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const path = require("path");
 
 const app = express();
 
@@ -13,8 +14,13 @@ const upload = multer({
 
 app.use(express.json());
 
-// Serve frontend files from the project directory
+// Serve frontend files
 app.use(express.static(__dirname));
+
+// Explicitly serve index.html
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
 
 
 /* ============================================================
@@ -25,7 +31,6 @@ const FRUIT_PROFILES = {
 
     banana: {
         name: "🍌 Banana",
-
         keywords: ["banana", "plantain"],
 
         personalities: [
@@ -52,7 +57,6 @@ const FRUIT_PROFILES = {
 
     apple: {
         name: "🍎 Apple",
-
         keywords: ["apple"],
 
         personalities: [
@@ -79,7 +83,6 @@ const FRUIT_PROFILES = {
 
     mango: {
         name: "🥭 Mango",
-
         keywords: ["mango"],
 
         personalities: [
@@ -106,7 +109,6 @@ const FRUIT_PROFILES = {
 
     orange: {
         name: "🍊 Orange",
-
         keywords: [
             "orange",
             "mandarin",
@@ -137,7 +139,6 @@ const FRUIT_PROFILES = {
 
     strawberry: {
         name: "🍓 Strawberry",
-
         keywords: ["strawberry"],
 
         personalities: [
@@ -164,7 +165,6 @@ const FRUIT_PROFILES = {
 
     pineapple: {
         name: "🍍 Pineapple",
-
         keywords: ["pineapple"],
 
         personalities: [
@@ -191,7 +191,6 @@ const FRUIT_PROFILES = {
 
     watermelon: {
         name: "🍉 Watermelon",
-
         keywords: ["watermelon"],
 
         personalities: [
@@ -218,7 +217,6 @@ const FRUIT_PROFILES = {
 
     kiwi: {
         name: "🥝 Kiwi",
-
         keywords: ["kiwi"],
 
         personalities: [
@@ -253,7 +251,6 @@ const FRUIT_RECIPES = {
 
     banana: {
         name: "🍌 Banana Pizza Sushi",
-
         description: `INGREDIENTS:
 Banana, chapati, peanut butter, cheese, chilli flakes.
 
@@ -268,7 +265,6 @@ Pazhu verdict: Somehow this should not work.`
 
     apple: {
         name: "🍎 Apple Samosa Bombs",
-
         description: `INGREDIENTS:
 Apple, samosa sheets, cinnamon, sugar and chilli powder.
 
@@ -283,7 +279,6 @@ Pazhu verdict: Sweet samosa technology unlocked.`
 
     mango: {
         name: "🥭 Mango Maggi Chaat",
-
         description: `INGREDIENTS:
 Mango, cooked Maggi, onion, chilli powder,
 lemon and coriander.
@@ -299,7 +294,6 @@ Pazhu verdict: This mango has entered its chaotic era.`
 
     orange: {
         name: "🍊 Orange Masala Rice",
-
         description: `INGREDIENTS:
 Cooked rice, orange segments, cumin,
 chilli, coriander and salt.
@@ -315,7 +309,6 @@ Pazhu verdict: Citrus rice has entered the timeline.`
 
     strawberry: {
         name: "🍓 Strawberry Chilli Dosa Rolls",
-
         description: `INGREDIENTS:
 Dosa, strawberries, cream cheese or thick curd,
 chilli flakes and honey.
@@ -332,7 +325,6 @@ Pazhu verdict: Dessert dosa has escaped containment.`
 
     pineapple: {
         name: "🍍 Pineapple Paneer Skewers",
-
         description: `INGREDIENTS:
 Pineapple chunks, paneer,
 chilli powder, salt and lemon.
@@ -347,7 +339,6 @@ Pazhu verdict: Sweet + spicy + paneer = violence.`
 
     watermelon: {
         name: "🍉 Watermelon Roti Tacos",
-
         description: `INGREDIENTS:
 Roti, watermelon, cucumber,
 mint, chilli powder and lemon.
@@ -362,7 +353,6 @@ Pazhu verdict: This should not work. Yet here we are.`
 
     kiwi: {
         name: "🥝 Kiwi Pepper Sandwich",
-
         description: `INGREDIENTS:
 Bread, kiwi, cream cheese,
 black pepper and a little honey.
@@ -409,9 +399,7 @@ function detectFruit(predictions, visual, filename) {
     predictions = parseJSON(predictions, []);
     visual = parseJSON(visual, {});
 
-    const fileText = String(
-        filename || ""
-    ).toLowerCase();
+    const fileText = String(filename || "").toLowerCase();
 
     const scores = {};
 
@@ -420,16 +408,11 @@ function detectFruit(predictions, visual, filename) {
     }
 
 
-    /* --------------------------------------------------------
-       FILENAME CLUES
-       -------------------------------------------------------- */
+    // Filename clues
 
     for (const fruit of Object.keys(FRUIT_PROFILES)) {
 
-        for (
-            const keyword of
-            FRUIT_PROFILES[fruit].keywords
-        ) {
+        for (const keyword of FRUIT_PROFILES[fruit].keywords) {
 
             if (fileText.includes(keyword)) {
                 scores[fruit] += 25;
@@ -438,9 +421,7 @@ function detectFruit(predictions, visual, filename) {
     }
 
 
-    /* --------------------------------------------------------
-       MOBILENET PREDICTIONS
-       -------------------------------------------------------- */
+    // MobileNet predictions
 
     if (Array.isArray(predictions)) {
 
@@ -454,20 +435,12 @@ function detectFruit(predictions, visual, filename) {
                 prediction.probability || 0
             );
 
-            for (
-                const fruit of
-                Object.keys(FRUIT_PROFILES)
-            ) {
+            for (const fruit of Object.keys(FRUIT_PROFILES)) {
 
-                for (
-                    const keyword of
-                    FRUIT_PROFILES[fruit].keywords
-                ) {
+                for (const keyword of FRUIT_PROFILES[fruit].keywords) {
 
                     if (label.includes(keyword)) {
-
-                        scores[fruit] +=
-                            probability * 100;
+                        scores[fruit] += probability * 100;
                     }
                 }
             }
@@ -475,59 +448,37 @@ function detectFruit(predictions, visual, filename) {
     }
 
 
-    /* --------------------------------------------------------
-       PIXEL COLOUR CLUES
-       -------------------------------------------------------- */
+    // Pixel colour clues
 
-    const yellow = Number(
-        visual.yellowRatio || 0
-    );
-
-    const red = Number(
-        visual.redRatio || 0
-    );
-
-    const green = Number(
-        visual.greenRatio || 0
-    );
-
-    const orange = Number(
-        visual.orangeRatio || 0
-    );
+    const yellow = Number(visual.yellowRatio || 0);
+    const red = Number(visual.redRatio || 0);
+    const green = Number(visual.greenRatio || 0);
+    const orange = Number(visual.orangeRatio || 0);
 
 
     if (yellow > 0.15) {
-
         scores.banana += 8;
         scores.mango += 5;
     }
 
-
     if (red > 0.15) {
-
         scores.apple += 8;
         scores.strawberry += 8;
     }
 
-
     if (green > 0.15) {
-
         scores.kiwi += 6;
         scores.watermelon += 5;
         scores.pineapple += 3;
     }
 
-
     if (orange > 0.12) {
-
         scores.orange += 10;
         scores.mango += 3;
     }
 
 
-    /* --------------------------------------------------------
-       BEST SCORE
-       -------------------------------------------------------- */
+    // Best score
 
     let bestFruit = "banana";
     let bestScore = -Infinity;
@@ -535,7 +486,6 @@ function detectFruit(predictions, visual, filename) {
     for (const fruit of Object.keys(scores)) {
 
         if (scores[fruit] > bestScore) {
-
             bestScore = scores[fruit];
             bestFruit = fruit;
         }
@@ -555,44 +505,21 @@ function detectFruit(predictions, visual, filename) {
 
 function calculateRipeness(fruit, visual) {
 
-    const brightness = Number(
-        visual.brightness || 120
-    );
-
-    const yellow = Number(
-        visual.yellowRatio || 0
-    );
-
-    const green = Number(
-        visual.greenRatio || 0
-    );
-
-    const red = Number(
-        visual.redRatio || 0
-    );
-
-    const orange = Number(
-        visual.orangeRatio || 0
-    );
-
-    const dark = Number(
-        visual.darkRatio || 0
-    );
+    const brightness = Number(visual.brightness || 120);
+    const yellow = Number(visual.yellowRatio || 0);
+    const green = Number(visual.greenRatio || 0);
+    const red = Number(visual.redRatio || 0);
+    const orange = Number(visual.orangeRatio || 0);
+    const dark = Number(visual.darkRatio || 0);
 
 
     if (fruit === "banana") {
 
-        if (
-            green > 0.20 &&
-            yellow < 0.20
-        ) {
+        if (green > 0.20 && yellow < 0.20) {
             return "unripe";
         }
 
-        if (
-            yellow > 0.22 &&
-            dark < 0.10
-        ) {
+        if (yellow > 0.22 && dark < 0.10) {
             return "ripe";
         }
 
@@ -604,10 +531,7 @@ function calculateRipeness(fruit, visual) {
 
     if (fruit === "apple") {
 
-        if (
-            red > 0.20 &&
-            brightness > 100
-        ) {
+        if (red > 0.20 && brightness > 100) {
             return "ripe";
         }
 
@@ -619,10 +543,7 @@ function calculateRipeness(fruit, visual) {
 
     if (fruit === "mango") {
 
-        if (
-            yellow > 0.18 ||
-            orange > 0.18
-        ) {
+        if (yellow > 0.18 || orange > 0.18) {
             return "ripe";
         }
 
@@ -690,9 +611,7 @@ function calculateRipeness(fruit, visual) {
 
 function calculateCondition(visual) {
 
-    const dark = Number(
-        visual.darkRatio || 0
-    );
+    const dark = Number(visual.darkRatio || 0);
 
     const saturation = Number(
         visual.saturationRatio || 0
@@ -707,21 +626,17 @@ function calculateCondition(visual) {
         return "suspicious shadows";
     }
 
-
     if (brightness < 65) {
         return "too dark to judge";
     }
-
 
     if (saturation > 0.45) {
         return "visually lively";
     }
 
-
     if (saturation < 0.15) {
         return "washed out";
     }
-
 
     return "looks decent";
 }
@@ -731,14 +646,9 @@ function calculateCondition(visual) {
    MOOD
    ============================================================ */
 
-function createMood(
-    fruit,
-    visual,
-    ripeness
-) {
+function createMood(fruit, visual, ripeness) {
 
-    const moods =
-        FRUIT_PROFILES[fruit].moods;
+    const moods = FRUIT_PROFILES[fruit].moods;
 
     let score = 0;
 
@@ -751,13 +661,9 @@ function createMood(
     );
 
 
-    score += Math.round(
-        brightness / 50
-    );
+    score += Math.round(brightness / 50);
 
-    score += Math.round(
-        saturation * 5
-    );
+    score += Math.round(saturation * 5);
 
 
     if (ripeness.includes("over")) {
@@ -775,10 +681,7 @@ function createMood(
    PERSONALITY
    ============================================================ */
 
-function createPersonality(
-    fruit,
-    visual
-) {
+function createPersonality(fruit, visual) {
 
     const personalities =
         FRUIT_PROFILES[fruit].personalities;
@@ -790,6 +693,7 @@ function createPersonality(
     const saturation = Number(
         visual.saturationRatio || 0
     );
+
 
     const score = Math.abs(
         Math.round(
@@ -840,7 +744,6 @@ function calculateCompatibility(
         ripeness === "fresh-looking" ||
         ripeness === "probably ripe"
     ) {
-
         score += 8;
     }
 
@@ -868,10 +771,7 @@ function calculateCompatibility(
 
     return Math.max(
         5,
-        Math.min(
-            98,
-            score
-        )
+        Math.min(98, score)
     );
 }
 
@@ -1062,7 +962,6 @@ function buildAnalysis(
 app.post(
     "/api/analyze",
     upload.single("fruit"),
-
     (req, res) => {
 
         try {
@@ -1146,7 +1045,6 @@ app.post(
 
 app.get(
     "/api/test",
-
     (req, res) => {
 
         return res.json({
@@ -1176,12 +1074,11 @@ app.get(
 
 
 /* ============================================================
-   VERCEL SERVERLESS EXPORT
+   VERCEL EXPORT
    ============================================================ */
 
-// DO NOT use app.listen() here.
-//
-// Vercel automatically starts and handles
-// the Express application as a serverless function.
+// DO NOT use app.listen() on Vercel.
+// Vercel handles the serverless HTTP server.
 
 module.exports = app;
+
